@@ -2,7 +2,9 @@
 // imports, and the nine templates that shipped with `fields: []` now have
 // field definitions — their components were given props with identical
 // defaults, so nothing renders differently.
-import { XHeader, LinkedInCover, TwitchBanner } from '@/components/avatars-covers';
+import {
+  XHeader, LinkedInCover, TwitchBanner, FacebookCover, YouTubeBanner, AvatarArtboard,
+} from '@/components/avatars-covers';
 import {
   PrivacyPost, FeaturePost, QuotePost, StatPost,
   LaunchPost, HotTakePost, MemePost, BlogPromoPost,
@@ -309,6 +311,36 @@ const TEMPLATES = [
       { k: 'title', label: 'Title', type: 'text', def: 'Tuesdays at 14:00 UTC.' },
       { k: 'body', label: 'Body', type: 'textarea', def: 'Live coding sessions, RAG deep dives, and chaotic deploys. Pop in.' },
     ], },
+  // === Avatars ===
+  { id: 'av-indigo', group: 'Avatar · 400×400', name: 'Avatar · Indigo (default)', dot: '#3947A8', w: 400, h: 400,
+    Component: AvatarArtboard, preset: { variant: 'indigo' }, fields: [] },
+  { id: 'av-ink', group: 'Avatar · 400×400', name: 'Avatar · Ink (stealth)', dot: '#0A0C10', w: 400, h: 400,
+    Component: AvatarArtboard, preset: { variant: 'ink' }, fields: [] },
+  { id: 'av-white', group: 'Avatar · 400×400', name: 'Avatar · White (light surface)', dot: '#D9DCE3', w: 400, h: 400,
+    Component: AvatarArtboard, preset: { variant: 'white' }, fields: [] },
+  { id: 'av-radial', group: 'Avatar · 400×400', name: 'Avatar · Radial (campaign)', dot: '#5866C2', w: 400, h: 400,
+    Component: AvatarArtboard, preset: { variant: 'radial' }, fields: [] },
+  { id: 'fb-cover', group: 'Cover · Banners', name: 'Facebook cover', dot: '#1877F2', w: 1640, h: 856,
+    Component: FacebookCover,
+    fields: [
+      { k: 'eyebrow', label: 'Eyebrow', type: 'text', def: 'What we make' },
+      { k: 'line1', label: 'Headline line 1', type: 'text', def: 'AI that' },
+      { k: 'emphasis', label: 'Emphasised word', type: 'text', def: 'respects' },
+      { k: 'line2', label: 'Headline line 2', type: 'text', def: "your customers' data." },
+      { k: 'body', label: 'Body', type: 'textarea', def: 'Build chatbots in fifteen minutes. Deploy to web, Discord, Slack, Telegram, WhatsApp — all from one workspace.' },
+      { k: 'url', label: 'URL', type: 'text', def: 'privexbot.com' },
+      { k: 'wordmark', label: 'Wordmark', type: 'text', def: 'PRIVEXBOT' },
+    ],
+  },
+  { id: 'yt-banner', group: 'Cover · Banners', name: 'YouTube channel art', dot: '#FF0000', w: 2560, h: 1440,
+    Component: YouTubeBanner,
+    fields: [
+      { k: 'wordmark', label: 'Wordmark', type: 'text', def: 'PRIVEXBOT' },
+      { k: 'headline', label: 'Headline', type: 'text', def: 'The privacy-first AI channel.' },
+      { k: 'chips', label: 'Chips', type: 'rows', cols: [{ k: 'label', label: 'Chip' }],
+        def: [{ label: 'Tutorials' }, { label: 'Live builds' }, { label: 'Privacy deep dives' }, { label: 'Changelog' }] },
+    ],
+  },
 ];
 
 export default TEMPLATES;

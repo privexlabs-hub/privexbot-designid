@@ -184,7 +184,14 @@ export function LinkedInCover({
 // YouTube banner — 2560×1440.
 // Safe area is 1235×338, per YouTube Help 10456525 (verified 2026-08-18).
 // The old 1546×423 figure is the pre-2020 "Channel Art" spec — do not restore it.
-export function YouTubeBanner() {
+export function YouTubeBanner({
+  wordmark = 'PRIVEXBOT',
+  headline = 'The privacy-first AI channel.',
+  chips = ['Tutorials', 'Live builds', 'Privacy deep dives', 'Changelog'],
+} = {}) {
+  // Accepts plain strings, or the {label} row objects the editor's repeating-row
+  // control produces.
+  const chipLabels = (chips || []).map((c) => (typeof c === 'string' ? c : c.label));
   return (
     <Frame lane="lane-dark" width={2560} height={1440} style={{ background: COLORS.ink950 }}>
       <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 50%, rgba(88,102,194,0.35), transparent 50%), radial-gradient(ellipse at 50% 90%, rgba(62,138,94,0.12), transparent 50%)' }} />
@@ -193,13 +200,13 @@ export function YouTubeBanner() {
       <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', width: 1235, height: 338, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 20, zIndex: 2 }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 14 }}>
           <Icon color="white" size={120} />
-          <span style={{ fontFamily: 'Inter Tight', fontWeight: 800, fontSize: 74, letterSpacing: '0.06em', color: '#fff' }}>PRIVEXBOT</span>
+          <span style={{ fontFamily: 'Inter Tight', fontWeight: 800, fontSize: 74, letterSpacing: '0.06em', color: '#fff' }}>{wordmark}</span>
         </div>
         <div className="display" style={{ fontSize: 56, color: '#fff', textAlign: 'center', lineHeight: 1, letterSpacing: '-0.025em' }}>
-          The privacy-first AI channel.
+          {headline}
         </div>
         <div style={{ display: 'flex', gap: 16, marginTop: 8 }}>
-          {['Tutorials', 'Live builds', 'Privacy deep dives', 'Changelog'].map((t) => (
+          {chipLabels.map((t) => (
             <div key={t} style={{ padding: '8px 18px', borderRadius: 999, border: '1px solid rgba(255,255,255,0.22)', color: COLORS.ink200, fontSize: 18, fontFamily: 'JetBrains Mono', fontWeight: 500 }}>{t}</div>
           ))}
         </div>
@@ -209,26 +216,34 @@ export function YouTubeBanner() {
 }
 
 // Facebook cover — 1640×856 (modern desktop spec)
-export function FacebookCover() {
+export function FacebookCover({
+  wordmark = 'PRIVEXBOT',
+  eyebrow = 'What we make',
+  line1 = 'AI that',
+  emphasis = 'respects',
+  line2 = "your customers' data.",
+  body = 'Build chatbots in fifteen minutes. Deploy to web, Discord, Slack, Telegram, WhatsApp — all from one workspace.',
+  url = 'privexbot.com',
+} = {}) {
   return (
     <Frame lane="lane-light" width={1640} height={856} style={{ background: COLORS.ink25 }}>
       <DotGrid color={COLORS.signal500} opacity={0.05} spacing={36} />
       <div style={{ position: 'relative', height: '100%', padding: 80, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
           <Icon color="indigo" size={64} />
-          <span style={{ fontFamily: 'Inter Tight', fontWeight: 800, fontSize: 38, letterSpacing: '0.04em', color: COLORS.signal500 }}>PRIVEXBOT</span>
+          <span style={{ fontFamily: 'Inter Tight', fontWeight: 800, fontSize: 38, letterSpacing: '0.04em', color: COLORS.signal500 }}>{wordmark}</span>
         </div>
         <div>
-          <div className="eyebrow" style={{ fontSize: 18, color: COLORS.signal700 }}>What we make</div>
+          <div className="eyebrow" style={{ fontSize: 18, color: COLORS.signal700 }}>{eyebrow}</div>
           <div className="display" style={{ fontSize: 92, color: COLORS.ink900, marginTop: 18, lineHeight: 0.98, letterSpacing: '-0.03em', maxWidth: 1200 }}>
-            AI that <span style={{ color: COLORS.signal500 }}>respects</span><br/>your customers' data.
+            {line1} <span style={{ color: COLORS.signal500 }}>{emphasis}</span><br/>{line2}
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
           <div style={{ fontSize: 22, color: COLORS.ink500, maxWidth: 760, lineHeight: 1.45 }}>
-            Build chatbots in fifteen minutes. Deploy to web, Discord, Slack, Telegram, WhatsApp — all from one workspace.
+            {body}
           </div>
-          <div style={{ fontFamily: 'JetBrains Mono', fontSize: 16, color: COLORS.ink500 }}>privexbot.com</div>
+          <div style={{ fontFamily: 'JetBrains Mono', fontSize: 16, color: COLORS.ink500 }}>{url}</div>
         </div>
       </div>
     </Frame>

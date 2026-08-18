@@ -284,3 +284,31 @@
     background: rgba(217,119,6,0.14); border: 1px solid rgba(217,119,6,0.4);
     border-radius: 6px; padding: 8px 10px;
   }
+
+  .edroot .tmpl-search {
+    width: 100%; box-sizing: border-box; margin: 0 0 4px;
+    padding: 9px 12px; background: #161A22;
+    border: 1px solid #1E2230; border-radius: 8px;
+    color: #F3F4F7; font-family: 'Inter', sans-serif; font-size: 13px;
+  }
+  .edroot .tmpl-search::placeholder { color: #5A6172; }
+  .edroot .tmpl-search:focus {
+    outline: none; border-color: #5866C2; box-shadow: 0 0 0 3px rgba(57,71,168,0.3);
+  }
+  .edroot .search-count,
+  .edroot .search-empty {
+    font-size: 11px; color: #5A6172; font-family: 'JetBrains Mono', monospace;
+    padding: 2px 4px 6px;
+  }
+  .edroot .search-empty { padding: 16px 4px; line-height: 1.5; }
+
+  .edroot .controls-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  }
+  .edroot .copy-link {
+    padding: 5px 10px; background: transparent;
+    border: 1px solid #1E2230; border-radius: 6px;
+    color: #858C9D; font-family: inherit; font-size: 11px; cursor: pointer;
+    transition: all 120ms; white-space: nowrap;
+  }
+  .edroot .copy-link:hover { color: #fff; border-color: #5866C2; }

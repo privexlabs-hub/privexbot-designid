@@ -63,11 +63,31 @@ function RowsField({ field, value, onChange }) {
   );
 }
 
+/** Parse the shareable view state out of a query string, ignoring anything
+ *  that no longer exists so a stale link degrades instead of breaking. */
+function readUrl(search) {
+  const q = new URLSearchParams(search);
+  const t = q.get('t');
+  const lane = q.get('lane');
+  const accent = q.get('accent');
+  return {
+    activeId: TEMPLATES.some((x) => x.id === t) ? t : null,
+    lane: LANES.some((l) => l.id === lane) ? lane : null,
+    accent: ACCENTS.some((a) => a.id === accent) ? accent : null,
+  };
+}
+
 export default function EditorPage() {
   const [activeId, setActiveId] = useState(TEMPLATES[0].id);
   const [content, setContent] = useState(defaultContent);
   const [lane, setLane] = useState('');
   const [accent, setAccent] = useState('');
+  // The page is prerendered, so the URL cannot be read during render — the
+  // server has no query string and the markup would not match on hydration
+  // (React #418). Read it once after mount instead.
+  const [hydrated, setHydrated] = useState(false);
+  const [query, setQuery] = useState('');
+  const [copied, setCopied] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [zipping, setZipping] = useState(null); // { done, total, label } | null
   const [exportScale, setExportScale] = useState(1); // 1x is already full resolution
@@ -76,6 +96,8 @@ export default function EditorPage() {
   const artboardRef = useRef(null);
   const stageRef = useRef(null);
   const batchRef = useRef(null);
+  const exportPngRef = useRef(null);
+  const downloadAllRef = useRef(null);
   const [scale, setScale] = useState(0.5);
 
   const tpl = TEMPLATES.find((t) => t.id === activeId);
@@ -103,18 +125,85 @@ export default function EditorPage() {
     return () => ro.disconnect();
   }, [activeId, tpl]);
 
+  useEffect(() => {
+    const u = readUrl(window.location.search);
+    if (u.activeId) setActiveId(u.activeId);
+    if (u.lane) setLane(u.lane);
+    if (u.accent) setAccent(u.accent);
+    setHydrated(true);
+  }, []);
+
+  // Mirror the view back into the query string. replaceState, not push — moving
+  // through templates should not fill the back button with 40 entries. Gated on
+  // `hydrated` so the initial default state cannot overwrite an incoming link
+  // before it has been read.
+  useEffect(() => {
+    if (!hydrated) return;
+    const q = new URLSearchParams();
+    q.set('t', activeId);
+    if (lane) q.set('lane', lane);
+    if (accent) q.set('accent', accent);
+    window.history.replaceState(null, '', `?${q}`);
+  }, [hydrated, activeId, lane, accent]);
+
   // Re-apply the accent after every render so React never leaves a stale colour.
   useLayoutEffect(() => {
     applyAccent(artboardRef.current?.querySelector('.artboard-export'), accent);
   });
 
+  const matches = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return TEMPLATES;
+    return TEMPLATES.filter((t) =>
+      `${t.name} ${t.group} ${t.id}`.toLowerCase().includes(q),
+    );
+  }, [query]);
+
   const grouped = useMemo(() => {
     const g = {};
-    TEMPLATES.forEach((t) => {
+    matches.forEach((t) => {
       (g[t.group] = g[t.group] || []).push(t);
     });
     return g;
-  }, []);
+  }, [matches]);
+
+  // Shortcuts. Deliberately few: export, batch export, and stepping through
+  // templates. Ignored while typing so they never eat a character.
+  useEffect(() => {
+    const onKey = (e) => {
+      const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) || e.target.isContentEditable;
+      const mod = e.metaKey || e.ctrlKey;
+      if (mod && e.key.toLowerCase() === 'e') {
+        e.preventDefault();
+        (e.shiftKey ? downloadAllRef : exportPngRef).current?.();
+        return;
+      }
+      if (typing || mod || e.altKey) return;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        const list = matches.length ? matches : TEMPLATES;
+        const i = list.findIndex((t) => t.id === activeId);
+        const next = list[(i + (e.key === 'ArrowDown' ? 1 : -1) + list.length) % list.length];
+        if (next) setActiveId(next.id);
+      }
+      if (e.key === '/') {
+        e.preventDefault();
+        document.getElementById('tmpl-search')?.focus();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [activeId, matches]);
+
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    } catch {
+      /* clipboard blocked — the URL bar already shows the same link */
+    }
+  };
 
   const updateField = (k, v) =>
     setContent((c) => ({ ...c, [activeId]: { ...c[activeId], [k]: v } }));
@@ -175,7 +264,7 @@ export default function EditorPage() {
                 style={{ width: t.w, height: t.h }}
                 ref={() => {}}
               >
-                <C {...(content[t.id] || {})} />
+                <C {...(t.preset || {})} {...(content[t.id] || {})} />
               </div>
             </LaneOverrideProvider>,
           );
@@ -206,6 +295,9 @@ export default function EditorPage() {
     }
   };
 
+  exportPngRef.current = exportPng;
+  downloadAllRef.current = downloadAll;
+
   const pct = zipping ? Math.round((zipping.done / zipping.total) * 100) : 0;
 
   return (
@@ -218,6 +310,20 @@ export default function EditorPage() {
             <span>Post editor</span>
           </h1>
           <p className="tagline">Pick a template. Edit text. Export PNG.</p>
+
+          <input
+            id="tmpl-search"
+            className="tmpl-search"
+            type="search"
+            placeholder="Search templates…  (/)"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          {query && (
+            <div className="search-count">
+              {matches.length} of {TEMPLATES.length}
+            </div>
+          )}
 
           {Object.entries(grouped).map(([group, items]) => (
             <div key={group}>
@@ -234,6 +340,10 @@ export default function EditorPage() {
               ))}
             </div>
           ))}
+
+          {!matches.length && (
+            <div className="search-empty">No template matches “{query}”.</div>
+          )}
 
           <Link className="kit-link" href="/">
             ← Back to full brand kit
@@ -270,7 +380,7 @@ export default function EditorPage() {
               }}
             >
               <LaneOverrideProvider lane={lane}>
-                {Component && <Component {...props} />}
+                {Component && <Component {...(tpl.preset || {})} {...props} />}
               </LaneOverrideProvider>
             </div>
           </div>
@@ -278,7 +388,12 @@ export default function EditorPage() {
 
         {/* ── Controls ────────────────────────────────────────────── */}
         <aside className="controls">
-          <h2>Edit</h2>
+          <div className="controls-head">
+            <h2>Edit</h2>
+            <button className="copy-link" onClick={copyLink} title="Copy a link to exactly this view">
+              {copied ? '✓ Copied' : 'Copy link'}
+            </button>
+          </div>
           <p className="sub">
             Changes preview live. Export at full {tpl.w}×{tpl.h}.
           </p>
