@@ -459,3 +459,69 @@
   .dod, .voice-pair, .toc-grid, .checklist { grid-template-columns: 1fr; }
   .cadence-head, .cadence-row { grid-template-columns: 80px repeat(7, 1fr); font-size: 10px; }
 }
+
+/* ── Progressive enhancement: copy affordances and search ──────────────────
+   Added in v2. Everything above this line is the original document. */
+
+.pbroot .pb-copyable { position: relative; }
+.pbroot .pb-copy {
+  position: absolute; top: 8px; right: 8px;
+  padding: 4px 10px; border-radius: 6px; cursor: pointer;
+  border: 1px solid var(--ink-100); background: var(--ink-0);
+  color: var(--ink-500); font-family: var(--font-mono); font-size: 11px;
+  opacity: 0; transition: opacity 120ms var(--ease-out), color 120ms, border-color 120ms;
+}
+.pbroot .pb-copyable:hover .pb-copy,
+.pbroot .pb-copy:focus-visible { opacity: 1; }
+.pbroot .pb-copy:hover { color: var(--signal-500); border-color: var(--signal-500); }
+.pbroot .pb-copy.is-copied { color: var(--attest-700); border-color: var(--attest-500); opacity: 1; }
+.pbroot .formula .pb-copy {
+  background: transparent; border-color: rgba(255,255,255,0.25); color: var(--ink-300);
+}
+.pbroot .formula .pb-copy:hover { color: #fff; border-color: var(--signal-300); }
+
+.pbroot .pb-code-copy { cursor: pointer; transition: background 120ms, color 120ms; }
+.pbroot .pb-code-copy:hover { background: var(--signal-50); color: var(--signal-700); }
+.pbroot .pb-code-copy.is-copied { background: var(--attest-100); color: var(--attest-700); }
+
+.pbroot .pb-search {
+  position: fixed; top: 16px; right: 20px; z-index: 40; width: 320px; max-width: calc(100vw - 40px);
+}
+.pbroot .pb-search input {
+  width: 100%; box-sizing: border-box; padding: 9px 14px;
+  border: 1px solid var(--ink-100); border-radius: var(--r-full);
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+  font-family: var(--font-sans); font-size: 13px; color: var(--ink-900);
+  box-shadow: 0 1px 3px rgba(10,12,16,0.06);
+}
+.pbroot .pb-search input:focus {
+  outline: none; border-color: var(--signal-500); box-shadow: 0 0 0 3px var(--signal-50);
+}
+.pbroot .pb-results {
+  margin-top: 6px; background: var(--ink-0);
+  border: 1px solid var(--ink-100); border-radius: var(--r-10);
+  box-shadow: 0 12px 32px rgba(10,12,16,0.14);
+  max-height: 62vh; overflow-y: auto; padding: 4px;
+}
+.pbroot .pb-results button {
+  display: grid; grid-template-columns: auto 1fr auto; gap: 4px 8px;
+  width: 100%; text-align: left; padding: 10px 12px; cursor: pointer;
+  background: transparent; border: none; border-radius: var(--r-8);
+  font-family: var(--font-sans);
+}
+.pbroot .pb-results button:hover { background: var(--signal-50); }
+.pbroot .pb-r-num { font-family: var(--font-mono); font-size: 10px; color: var(--signal-500); }
+.pbroot .pb-r-title { font-size: 13px; font-weight: 600; color: var(--ink-900); }
+.pbroot .pb-r-hits { font-family: var(--font-mono); font-size: 10px; color: var(--ink-400); }
+.pbroot .pb-r-snip {
+  grid-column: 1 / -1; font-size: 11px; line-height: 1.45; color: var(--ink-500);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.pbroot .pb-noresult { padding: 14px; font-size: 12px; color: var(--ink-500); }
+
+@media print {
+  .pbroot .pb-search, .pbroot .pb-copy { display: none; }
+}
+@media (max-width: 880px) {
+  .pbroot .pb-search { position: static; width: auto; margin: 12px 24px 0; }
+}

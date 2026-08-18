@@ -1,0 +1,86 @@
+# PrivexBot Brand ID
+
+> The PrivexBot social brand kit: a pan/zoom canvas of every brand artboard, a
+> post editor that exports PNG and ZIP, and the social playbook. Static Next.js
+> app, no backend.
+
+## Routes
+- /          Brand kit canvas. 10 sections, ~53 artboards.
+- /editor    Post editor. 36 templates, live editing, lane and accent
+             switching, 5 locales, PNG and ZIP export.
+- /playbook  Social playbook. 13 sections, searchable, copy-to-clipboard.
+
+## Machine-readable artifacts
+- /tokens.json         all design tokens, flat name -> hex
+- /tokens.scss         the same as Sass variables
+- /tokens.android.xml  the same as Android colour resources
+- /llms-tokens.txt     tokens as plain text
+- /design-canvas-state.json  saved artboard order and renames for the canvas
+
+## Source of truth
+Design tokens live in tokens/brand.tokens.json (W3C Design Tokens Community
+Group format). Everything else that carries a colour — the CSS custom
+properties, the JS COLORS map, the playbook palette, the exports above — is
+generated from it by scripts/build-tokens.mjs. Never edit a generated file.
+
+## Templates (36)
+### Square · 1080×1080
+- privacy — Privacy / TEE post (1080x1080)
+- feature — Feature announcement (1080x1080)
+- quote — Customer quote (1080x1080)
+- stat — Big stat card (1080x1080)
+- launch — Launch / milestone (1080x1080)
+- hottake — Industry hot take (1080x1080)
+- meme — Lighthearted / meme (1080x1080)
+- blog — Blog promo (1080x1080)
+
+### Engagement · 1080×1080
+- why — Why we built it (founder story) (1080x1080)
+- manifesto — Manifesto · what we believe (1080x1080)
+- problem — Problem / solution split (1080x1080)
+- faq — Did you know · educational (1080x1080)
+- usecase — Use case · healthcare (1080x1080)
+- receipt — Attestation receipt · proof (1080x1080)
+- cta — CTA · sign up (1080x1080)
+- community — Community spotlight (1080x1080)
+- compare — Comparison · vs alternatives (1080x1080)
+
+### Carousel · 1080×1080
+- car1 — Carousel · Slide 1 (hook) (1080x1080)
+- car2 — Carousel · Slide 2 (reason) (1080x1080)
+- car5 — Carousel · Slide 5 (close) (1080x1080)
+
+### Vertical · 1080×1920
+- st-launch — Story / Reel · Launch (1080x1920)
+- st-stat — Story / Reel · Big stat (1080x1920)
+- st-quote — Story / Reel · Quote (1080x1920)
+- st-privacy — Story / Reel · Privacy (1080x1920)
+
+### YouTube · 1280×720
+- th-tutorial — Thumbnail · Tutorial (1280x720)
+- th-hottake — Thumbnail · Hot take (1280x720)
+- th-launch — Thumbnail · Launch (1280x720)
+
+### Cover · Banners
+- x-header — X / Twitter header (1500x500)
+- li-cover — LinkedIn cover (1584x396)
+- twitch — Twitch banner (1200x480)
+- fb-cover — Facebook cover (1640x856)
+- yt-banner — YouTube channel art (2560x1440)
+
+### Avatar · 400×400
+- av-indigo — Avatar · Indigo (default) (400x400)
+- av-ink — Avatar · Ink (stealth) (400x400)
+- av-white — Avatar · White (light surface) (400x400)
+- av-radial — Avatar · Radial (campaign) (400x400)
+
+## Conventions that are easy to get wrong
+- Asset paths must be root-absolute (/assets/...). A relative path resolves
+  against the current route and 404s under /editor.
+- Component load order matters: components/brand.jsx defines COLORS, Icon,
+  Frame, Ico and DotGrid, which every template imports.
+- styles/playbook.css and styles/editor.css are scoped to .pbroot / .edroot.
+  Unscoped body/h1 rules would leak across routes after a client-side nav.
+- Fonts are self-hosted so PNG export can inline @font-face same-origin.
+- Exports go through lib/export-image.js, which clamps scale to the browser's
+  real canvas limit. Do not call html-to-image directly.

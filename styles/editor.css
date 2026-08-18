@@ -339,3 +339,28 @@
   .edroot .overflow-warn strong { display: block; color: #fff; margin-bottom: 6px; font-size: 12px; }
   .edroot .overflow-warn ul { margin: 0 0 6px; padding-left: 16px; }
   .edroot .overflow-warn li { margin-bottom: 2px; }
+
+  .edroot .safe-overlay {
+    position: absolute; z-index: 5; pointer-events: none;
+    border: 1px dashed rgba(125,199,154,0.9);
+    box-shadow: 0 0 0 9999px rgba(10,12,16,0.42);
+  }
+  .edroot .safe-overlay span {
+    position: absolute; top: 4px; left: 4px;
+    padding: 2px 6px; border-radius: 4px;
+    background: rgba(125,199,154,0.92); color: #0A0C10;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+  }
+  .edroot .safe-toggle {
+    display: flex; gap: 8px; align-items: flex-start; cursor: pointer;
+    font-size: 12px; color: #D9DCE3;
+  }
+  .edroot .safe-toggle em {
+    display: block; font-style: normal; font-size: 10px; color: #5A6172;
+    font-family: 'JetBrains Mono', monospace; margin-top: 2px; line-height: 1.4;
+  }
+  .edroot .char-count {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #5A6172;
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .edroot .char-count .over { color: #FFB4B6; font-weight: 700; }

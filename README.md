@@ -5,9 +5,17 @@ canvas, a post editor with PNG/ZIP export, and the social playbook.
 
 ```sh
 npm install
-npm run dev      # http://localhost:3000
+npm run dev              # http://localhost:3000
 npm run build && npm run start
+
+npm run tokens           # regenerate everything from tokens/brand.tokens.json
+npm run locales          # re-extract content/locales/en.json from the templates
+npm run check:contrast   # WCAG 2.2 gate over the pairings the design relies on
+npm run llms             # regenerate public/llms.txt
 ```
+
+`prebuild` runs `tokens` and `llms`, so a plain `npm run build` is always
+self-consistent.
 
 Deploy to Vercel with `vercel` (zero config — it detects Next.js).
 
@@ -16,8 +24,8 @@ Deploy to Vercel with `vercel` (zero config — it detects Next.js).
 | Route | What it is |
 |---|---|
 | `/` | **Brand kit canvas.** 10 sections, ~50 artboards: foundations (logo / colour / type / voice), profile avatars, cover banners, 10 square feed posts, 5 vertical formats, 8 in-platform profile mockups, 9 engagement posts, a 3-slide carousel, 3 YouTube thumbnails. Drag artboards to reorder, click a label to focus, ⋯ → Download PNG/HTML. |
-| `/editor` | **Post editor.** 30 templates. Edit every field live, switch visual lane and accent colour, export one PNG or all 30 as a ZIP. |
-| `/playbook` | **Social playbook.** 13 sections, §01 Thesis → §13 Governance. |
+| `/editor` | **Post editor.** 36 templates. Edit every field live, switch visual lane, accent colour and language, toggle the safe-area overlay, export one PNG at 1×/2×/3× or the whole set as a ZIP with an alt-text sidecar. Shareable: the URL carries the exact view. |
+| `/playbook` | **Social playbook.** 13 sections, §01 Thesis → §13 Governance. Searchable, with copy-to-clipboard on every table, hashtag set, caption formula and inline value. |
 
 ## Layout
 
@@ -79,3 +87,74 @@ template byte-for-byte.
 **The ZIP export is sequential by design.** Captures run one at a time — a
 1080×1920 artboard is a large canvas and running these concurrently exhausts
 memory, especially on mobile Safari. All 30 take about 10 seconds.
+
+
+## Design tokens
+
+`tokens/brand.tokens.json` (W3C Design Tokens Community Group format) is the
+single source of truth. `scripts/build-tokens.mjs` generates every consumer:
+
+| Generated | For |
+|---|---|
+| `styles/tokens.generated.css` | the `:root` custom properties |
+| `components/tokens.generated.js` | the `COLORS` map every template imports |
+| `public/tokens.json` | engineers, Figma Variables, Style Dictionary |
+| `public/tokens.scss`, `public/tokens.android.xml` | other platforms |
+
+Whole files are generated, never regions inside hand-edited ones. Change a value
+in the source, run `npm run tokens`, and it reaches the CSS, the components, the
+playbook palette and the exports — `git diff` should show nothing else.
+
+The token file also holds the type families, radius scale and easing curve.
+Those are not decoration: dropping `--font-sans` silently reverts the whole site
+to a fallback face, which is exactly what happened the first time the generator
+emitted only colours.
+
+## Localisation
+
+`content/locales/*.json` hold per-template copy. `en.json` is generated from the
+template defaults by `npm run locales` and is the translation baseline; the
+others are partial by design and fall back to English per field.
+
+Every non-English pack is `needs-native-review` and the editor badges it as
+unreviewed with a translated-field count. It is machine-assisted copy, not
+approved brand voice — which matters for a privacy product where tone carries
+legal weight.
+
+`lib/scripts.js` sets `lang` and a per-script font stack on the artboard. `lang`
+is what stops Japanese text rendering with a Chinese face for the Han characters
+the two share. CJK deliberately uses system fonts — the webfont is ~1.6 MB per
+weight and Hiragino/PingFang/Yu Gothic/Malgun are good. Arabic, Devanagari and
+Thai are self-hosted Noto at ~27–166 KB each, each behind its own
+`unicode-range`, so a Latin-only visitor downloads none of them.
+
+RTL is **editor-chrome-only**: text direction and alignment are correct inside
+each slot, but the artboard keeps its LTR coordinate space. An Arabic export is
+therefore an LTR-composed design with correct Arabic text in it. Truly RTL-native
+assets would need mirrored template variants, not a toggle.
+
+## Exports
+
+Both routes go through `lib/export-image.js`. It probes the browser's real canvas
+limit by drawing and reading back a pixel — iOS Safari caps canvas area at about
+16.7 megapixels, and over the cap browsers do not throw, they silently produce a
+blank image. A 1080×1920 artboard at 3× is 18.7 MP, so the old hardcoded 3× was
+a blank-PNG bug waiting for the first iPad. Scale is clamped and the UI says so.
+
+Default is 1×, which is already full resolution: artboards are authored at true
+pixel size.
+
+## Platform numbers
+
+`lib/platforms.js` carries character limits and safe areas with a first-party
+source and a `VERIFIED_ON` date on each, because these drift and most published
+size guides are years stale. Counting is per-platform: X weights CJK and emoji
+as 2 and every URL as exactly 23; YouTube descriptions are byte-counted.
+
+The safe-area overlay uses Meta's published 14% / 35% / 6% — the only officially
+documented safe area in the space, and more conservative than every third-party
+TikTok/Shorts figure, so one overlay is defensible for all vertical formats.
+
+One open conflict, deliberately not resolved silently: Later documents Instagram
+dropping to **5** hashtags per post from 18 Dec 2025, while Meta's API docs still
+say 30. `HASHTAG_NOTE` shows the conservative number and explains both.

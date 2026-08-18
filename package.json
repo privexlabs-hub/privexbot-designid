@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "tokens": "node scripts/build-tokens.mjs",
-    "prebuild": "npm run tokens",
+    "prebuild": "npm run tokens && npm run llms",
     "dev": "npm run tokens && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "check:contrast": "node scripts/check-contrast.mjs",
-    "locales": "node scripts/extract-locale.mjs"
+    "locales": "node scripts/extract-locale.mjs",
+    "llms": "node scripts/build-llms.mjs"
   },
   "dependencies": {
     "html-to-image": "1.11.13",

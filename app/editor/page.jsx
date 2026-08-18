@@ -11,6 +11,21 @@ import TEMPLATES from './templates';
 import { LANES, ACCENTS, applyAccent } from './theme';
 import { LOCALES, DEFAULT_LOCALE, getLocale, localeContent } from './locales';
 import { SCRIPTS, scriptProps, isolateLtrRuns } from '@/lib/scripts';
+import { safeAreaFor, countFor, LIMITS, HASHTAG_NOTE, VERIFIED_ON } from '@/lib/platforms';
+
+/**
+ * A first-draft alt text for a template, from the copy actually on it. Not a
+ * substitute for someone writing a good one — it is a starting point that makes
+ * shipping *no* alt text the harder option.
+ */
+function altTextFor(tpl, values) {
+  const prose = Object.entries(values)
+    .filter(([, v]) => typeof v === 'string' && v.trim())
+    .map(([, v]) => v.replace(/\s+/g, ' ').trim())
+    .join(' — ');
+  const base = `PrivexBot ${tpl.name.toLowerCase()}. ${prose}`;
+  return base.length > 900 ? `${base.slice(0, 897)}...` : base;
+}
 
 /** Build the default content map, keyed by template id. */
 function defaultContent() {
@@ -22,6 +37,32 @@ function defaultContent() {
     });
   });
   return map;
+}
+
+/**
+ * Character counts for a field, against the limits of the platforms this copy
+ * plausibly lands on. Counted the way each platform counts — X weights CJK and
+ * emoji as 2 and every URL as 23; YouTube descriptions are byte-counted — so a
+ * single `.length` would be wrong for most of them.
+ */
+function FieldCount({ value }) {
+  const text = typeof value === 'string' ? value : '';
+  if (!text) return null;
+  const shown = ['X · Post', 'Instagram · Caption (feed & Reels)', 'LinkedIn · Post'];
+  const rows = LIMITS.filter((l) => shown.includes(`${l.platform} · ${l.field}`)).map((l) => {
+    const n = countFor(text, l.counting);
+    return { key: l.platform, n, max: l.max, over: n > l.max };
+  });
+  return (
+    <div className="char-count">
+      {rows.map((r) => (
+        <span key={r.key} className={r.over ? 'over' : undefined}
+              title={`${r.n} of ${r.max} — limits verified ${VERIFIED_ON}`}>
+          {r.key} {r.n}/{r.max}
+        </span>
+      ))}
+    </div>
+  );
 }
 
 /** Repeating-row control, for the array-shaped props (rows, examples). */
@@ -91,6 +132,7 @@ export default function EditorPage() {
   const [hydrated, setHydrated] = useState(false);
   const [locale, setLocale] = useState(DEFAULT_LOCALE);
   const [overflow, setOverflow] = useState([]);
+  const [showSafe, setShowSafe] = useState(false);
   const [query, setQuery] = useState('');
   const [copied, setCopied] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -122,6 +164,7 @@ export default function EditorPage() {
     return out;
   }, [props, script.dir]);
 
+  const safeArea = tpl ? safeAreaFor(tpl.w, tpl.h) : null;
   const coverage = tpl ? localeContent(locale, tpl.id, tpl.fields) : { translated: 0, total: 0 };
 
   // Fit-to-screen
@@ -305,6 +348,7 @@ export default function EditorPage() {
     const { createRoot } = await import('react-dom/client');
     const zip = new JSZip();
     let fontCSS;
+    const altRows = [['file', 'template', 'size', 'suggested alt text']];
     setZipping({ done: 0, total: TEMPLATES.length, label: '' });
     const root = createRoot(host);
     try {
@@ -340,8 +384,19 @@ export default function EditorPage() {
           fontEmbedCSS: fontCSS,
         });
         zip.file(`privexbot-${t.id}.png`, blob);
+        // Alt text travels with the image. Canva drops alt text on PNG export
+        // entirely and no brand portal surveyed ships it at all, yet every
+        // platform wants it and it is the accessibility step most often skipped.
+        // A sidecar means whoever posts the image already has the text.
+        altRows.push([t.id, t.name, `${t.w}x${t.h}`, altTextFor(t, content[t.id] || {})]);
         setZipping({ done: i + 1, total: TEMPLATES.length, label: t.name });
       }
+      zip.file(
+        'alt-text.csv',
+        altRows
+          .map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(','))
+          .join('\n'),
+      );
       saveBlob(await zip.generateAsync({ type: 'blob' }), 'privexbot-brand-kit.zip');
     } catch (e) {
       console.error('ZIP export failed', e);
@@ -424,6 +479,24 @@ export default function EditorPage() {
             ref={artboardRef}
             style={{ width: tpl.w * scale, height: tpl.h * scale, position: 'relative' }}
           >
+            {showSafe && safeArea && (
+              /* Deliberately a sibling of .artboard-export, not a child — the
+                 exporters capture that node, and a guide must never be baked
+                 into the PNG. */
+              <div
+                className="safe-overlay"
+                style={{
+                  left: safeArea.x * scale,
+                  top: safeArea.y * scale,
+                  width: safeArea.width * scale,
+                  height: safeArea.height * scale,
+                }}
+              >
+                <span>
+                  {safeArea.width}×{safeArea.height} safe
+                </span>
+              </div>
+            )}
             <div
               className="artboard-export"
               lang={script.lang}
@@ -560,6 +633,7 @@ export default function EditorPage() {
                     onChange={(e) => updateField(f.k, e.target.value)}
                   />
                 )}
+                <FieldCount value={props[f.k]} />
               </div>
             ),
           )}
@@ -567,6 +641,20 @@ export default function EditorPage() {
           <button className="reset-btn" onClick={resetTemplate}>
             Reset this template
           </button>
+
+          {safeArea && (
+            <label className="safe-toggle">
+              <input
+                type="checkbox"
+                checked={showSafe}
+                onChange={(e) => setShowSafe(e.target.checked)}
+              />
+              <span>
+                Show safe area
+                <em>{safeArea.source}</em>
+              </span>
+            </label>
+          )}
 
           <div className="ctrl-group">
             <div className="ctrl-label">Export scale</div>
