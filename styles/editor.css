@@ -275,3 +275,12 @@
     position: fixed; left: -20000px; top: 0; width: 0; height: 0; overflow: visible;
     pointer-events: none;
   }
+
+  .edroot .scale-hint {
+    font-size: 11px; color: #5A6172; font-family: 'JetBrains Mono', monospace;
+  }
+  .edroot .scale-warn {
+    font-size: 11px; line-height: 1.45; color: #FFD9A0;
+    background: rgba(217,119,6,0.14); border: 1px solid rgba(217,119,6,0.4);
+    border-radius: 6px; padding: 8px 10px;
+  }

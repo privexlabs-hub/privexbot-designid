@@ -129,5 +129,95 @@
         "$value": "#92400E"
       }
     }
+  },
+  "fontFamily": {
+    "$type": "fontFamily",
+    "$description": "Type families. The literal names matter — components reference them inline.",
+    "sans": {
+      "$value": [
+        "Inter",
+        "system-ui",
+        "-apple-system",
+        "sans-serif"
+      ]
+    },
+    "display": {
+      "$value": [
+        "Inter Tight",
+        "Inter",
+        "sans-serif"
+      ]
+    },
+    "mono": {
+      "$value": [
+        "JetBrains Mono",
+        "ui-monospace",
+        "monospace"
+      ]
+    }
+  },
+  "radius": {
+    "$type": "dimension",
+    "$description": "Corner radii. `full` is the pill/circle value.",
+    "4": {
+      "$value": {
+        "value": 4,
+        "unit": "px"
+      }
+    },
+    "6": {
+      "$value": {
+        "value": 6,
+        "unit": "px"
+      }
+    },
+    "8": {
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      }
+    },
+    "10": {
+      "$value": {
+        "value": 10,
+        "unit": "px"
+      }
+    },
+    "12": {
+      "$value": {
+        "value": 12,
+        "unit": "px"
+      }
+    },
+    "16": {
+      "$value": {
+        "value": 16,
+        "unit": "px"
+      }
+    },
+    "20": {
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      }
+    },
+    "full": {
+      "$value": {
+        "value": 999,
+        "unit": "px"
+      }
+    }
+  },
+  "easing": {
+    "$type": "cubicBezier",
+    "$description": "Motion easing.",
+    "out": {
+      "$value": [
+        0.2,
+        0.7,
+        0.2,
+        1
+      ]
+    }
   }
 }

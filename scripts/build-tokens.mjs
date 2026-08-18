@@ -50,6 +50,35 @@ function flatten(tree) {
 }
 
 const tokens = flatten(src);
+
+/**
+ * Non-colour tokens. These lived in the same :root block as the colours and are
+ * every bit as load-bearing — losing --font-sans silently reverts the whole site
+ * to a fallback face, which is exactly what happened the first time this
+ * generator only emitted colours.
+ */
+function others(tree) {
+  const out = [];
+  const px = (v) => (typeof v === 'object' ? `${v.value}${v.unit}` : String(v));
+  for (const [name, t] of Object.entries(tree.fontFamily ?? {})) {
+    if (name.startsWith('$')) continue;
+    out.push({
+      cssName: `--font-${name}`,
+      value: t.$value.map((f) => (f.includes(' ') ? `'${f}'` : f)).join(', '),
+    });
+  }
+  for (const [name, t] of Object.entries(tree.radius ?? {})) {
+    if (name.startsWith('$')) continue;
+    out.push({ cssName: `--r-${name}`, value: px(t.$value) });
+  }
+  for (const [name, t] of Object.entries(tree.easing ?? {})) {
+    if (name.startsWith('$')) continue;
+    out.push({ cssName: `--ease-${name}`, value: `cubic-bezier(${t.$value.join(', ')})` });
+  }
+  return out;
+}
+const nonColour = others(src);
+if (!nonColour.length) throw new Error('no non-colour tokens found — check the source file');
 if (!tokens.length) throw new Error(`no colour tokens found in ${SRC}`);
 
 const dup = tokens.map((t) => t.cssName).filter((n, i, a) => a.indexOf(n) !== i);
@@ -84,6 +113,8 @@ results.push(
             list.map((t) => `  ${t.cssName}: ${t.value};`).join('\n'),
         )
         .join('\n\n') +
+      '\n\n  /* type, radii, motion */\n' +
+      nonColour.map((t) => `  ${t.cssName}: ${t.value};`).join('\n') +
       '\n}\n',
   ),
 );

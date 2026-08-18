@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useRef, useMemo, useLayoutEffect } from 'react';
 import Link from 'next/link';
-import * as htmlToImage from 'html-to-image';
 import JSZip from 'jszip';
+import { exportNode, exportAndSave, getSharedFontCSS, saveBlob, settle, SCALES } from '@/lib/export-image';
 import '@/styles/editor.css';
 
 import { Icon, LaneOverrideProvider } from '@/components/brand';
@@ -70,6 +70,8 @@ export default function EditorPage() {
   const [accent, setAccent] = useState('');
   const [exporting, setExporting] = useState(false);
   const [zipping, setZipping] = useState(null); // { done, total, label } | null
+  const [exportScale, setExportScale] = useState(1); // 1x is already full resolution
+  const [scaleNote, setScaleNote] = useState(null); // set when the browser forced a smaller canvas
 
   const artboardRef = useRef(null);
   const stageRef = useRef(null);
@@ -120,20 +122,24 @@ export default function EditorPage() {
   const resetTemplate = () =>
     setContent((c) => ({ ...c, [activeId]: defaultContent()[activeId] }));
 
-  /** Capture one already-mounted node at its native size. */
-  const capture = (node, t) =>
-    htmlToImage.toPng(node, { pixelRatio: 1, cacheBust: true, width: t.w, height: t.h });
-
   const exportPng = async () => {
     const node = artboardRef.current?.querySelector('.artboard-export');
     if (!node) return;
     setExporting(true);
+    setScaleNote(null);
     try {
-      const dataUrl = await capture(node, tpl);
-      const a = document.createElement('a');
-      a.download = `privexbot-${tpl.id}.png`;
-      a.href = dataUrl;
-      a.click();
+      await exportAndSave(node, {
+        filename: `privexbot-${tpl.id}${exportScale > 1 ? `@${exportScale}x` : ''}.png`,
+        width: tpl.w,
+        height: tpl.h,
+        scale: exportScale,
+        onScale: ({ scale: used, clamped }) =>
+          clamped &&
+          setScaleNote(
+            `This browser could not allocate a ${tpl.w * exportScale}x${tpl.h * exportScale} canvas, ` +
+              `so the export was rendered at ${used}x instead of ${exportScale}x.`,
+          ),
+      });
     } catch (e) {
       console.error('Export failed', e);
       alert('Export failed: ' + e.message);
@@ -152,6 +158,7 @@ export default function EditorPage() {
     if (!host) return;
     const { createRoot } = await import('react-dom/client');
     const zip = new JSZip();
+    let fontCSS;
     setZipping({ done: 0, total: TEMPLATES.length, label: '' });
     const root = createRoot(host);
     try {
@@ -176,17 +183,20 @@ export default function EditorPage() {
         });
         const node = host.querySelector('.artboard-export');
         applyAccent(node, accent);
-        try { await document.fonts.ready; } catch { /* not fatal */ }
-        const dataUrl = await capture(node, t);
-        zip.file(`privexbot-${t.id}.png`, dataUrl.split(',')[1], { base64: true });
+        await settle();
+        // Font CSS is identical for every artboard and expensive to build
+        // (it fetches and base64-inlines each face) — compute it once.
+        if (!fontCSS) fontCSS = await getSharedFontCSS(node);
+        const blob = await exportNode(node, {
+          width: t.w,
+          height: t.h,
+          scale: exportScale,
+          fontEmbedCSS: fontCSS,
+        });
+        zip.file(`privexbot-${t.id}.png`, blob);
         setZipping({ done: i + 1, total: TEMPLATES.length, label: t.name });
       }
-      const blob = await zip.generateAsync({ type: 'blob' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'privexbot-brand-kit.zip';
-      a.click();
-      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+      saveBlob(await zip.generateAsync({ type: 'blob' }), 'privexbot-brand-kit.zip');
     } catch (e) {
       console.error('ZIP export failed', e);
       alert('ZIP export failed: ' + e.message);
@@ -339,6 +349,30 @@ export default function EditorPage() {
           <button className="reset-btn" onClick={resetTemplate}>
             Reset this template
           </button>
+
+          <div className="ctrl-group">
+            <div className="ctrl-label">Export scale</div>
+            <div className="seg">
+              {SCALES.map((s) => (
+                <button
+                  key={s}
+                  className={exportScale === s ? 'on' : ''}
+                  onClick={() => {
+                    setExportScale(s);
+                    setScaleNote(null);
+                  }}
+                  title={`${tpl.w * s} × ${tpl.h * s} px`}
+                >
+                  {s}×
+                </button>
+              ))}
+            </div>
+            <div className="scale-hint">
+              {tpl.w * exportScale} × {tpl.h * exportScale} px
+              {exportScale === 1 ? ' · native' : ''}
+            </div>
+            {scaleNote && <div className="scale-warn">{scaleNote}</div>}
+          </div>
 
           <button className="export-btn" onClick={exportPng} disabled={exporting || !!zipping}>
             {exporting ? 'Exporting…' : (

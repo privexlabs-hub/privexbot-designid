@@ -2,6 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { exportNode, saveBlob, settle } from './export-image';
 
 // DesignCanvas.jsx — Figma-ish design canvas wrapper
 // Warm gray grid bg + Sections + Artboards + PostIt notes.
@@ -136,6 +137,10 @@ function dcFlatten(children) {
 // Focus is ephemeral.
 // ─────────────────────────────────────────────────────────────
 const DC_STATE_FILE = 'design-canvas-state.json';
+// Export scale for the canvas ⋯ menu. 1 is native resolution — artboards are
+// authored at true pixel size. Raising this re-introduces the iOS canvas-area
+// problem for tall formats, so it is clamped at capture time regardless.
+const DC_EXPORT_SCALE = 1;
 
 export function DesignCanvas({ children, minScale, maxScale, style }) {
   const [state, setState] = React.useState({ sections: {}, focus: null });
@@ -554,13 +559,28 @@ export function DCSection({ id, title, subtitle, children, gap = 48 }) {
 // DCArtboard — marker; rendered by DCArtboardFrame via DCSection.
 export function DCArtboard() { return null; }
 
-// Per-artboard export (kind: 'png' | 'html'). Both paths share the same
-// self-contained clone: computed styles baked in, @font-face / <img> /
-// inline-style background-image urls inlined as data URIs. PNG wraps the
-// clone in foreignObject→canvas at 3× the artboard's natural width×height
-// (same pipeline the host uses for page captures); HTML wraps it in a
-// minimal standalone document. Both are independent of viewport zoom.
+// Per-artboard export (kind: 'png' | 'html').
+//
+// PNG delegates to lib/export-image.js — the same pipeline the editor uses, so
+// both routes emit identical files, with a runtime canvas-area clamp.
+//
+// HTML keeps the original self-contained clone: computed styles baked in, and
+// @font-face / <img> / inline-style background-image urls inlined as data URIs,
+// wrapped in a minimal standalone document. That clone work is expensive and
+// only the HTML path needs it, so PNG returns before any of it runs.
 async function dcExport(node, w, h, name, kind) {
+  if (kind !== 'html') {
+    await settle();
+    const blob = await exportNode(node, {
+      width: w,
+      height: h,
+      scale: DC_EXPORT_SCALE,
+      onScale: ({ scale: used, clamped }) =>
+        clamped && console.warn(`[design-canvas] export clamped to ${used}x`),
+    });
+    return saveBlob(blob, name + '.png');
+  }
+
   try { await document.fonts.ready; } catch {}
   const toDataURL = (url) => fetch(url).then((r) => r.blob()).then((b) => new Promise((res) => {
     const fr = new FileReader(); fr.onload = () => res(fr.result); fr.onerror = () => res(url); fr.readAsDataURL(b);
@@ -653,24 +673,6 @@ async function dcExport(node, w, h, name, kind) {
     return save(new Blob([html], { type: 'text/html' }), 'html');
   }
 
-  // PNG: the SVG's own width/height must be the output resolution — an
-  // <img>-loaded SVG rasterizes at its intrinsic size, so sizing it at 1×
-  // and ctx.scale()-ing up would just upscale a 1× bitmap. viewBox maps the
-  // w×h foreignObject onto the px·w × px·h SVG canvas so the browser renders
-  // the HTML at full resolution.
-  const px = 3;
-  const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w * px + '" height="' + h * px +
-    '" viewBox="0 0 ' + w + ' ' + h + '"><foreignObject width="' + w + '" height="' + h + '">' +
-    (fontCss ? '<style><![CDATA[' + fontCss + ']]></style>' : '') + xml + '</foreignObject></svg>';
-  const img = new Image();
-  await new Promise((res, rej) => {
-    img.onload = res; img.onerror = () => rej(new Error('svg load failed'));
-    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-  });
-  const cv = document.createElement('canvas');
-  cv.width = w * px; cv.height = h * px;
-  cv.getContext('2d').drawImage(img, 0, 0);
-  cv.toBlob((blob) => save(blob, 'png'), 'image/png');
 }
 
 function DCArtboardFrame({ sectionId, artboard, label, order, onRename, onReorder, onFocus, onDelete }) {

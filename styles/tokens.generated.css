@@ -47,4 +47,18 @@
   --warn-100: #FFF3CD;
   --warn-500: #D97706;
   --warn-700: #92400E;
+
+  /* type, radii, motion */
+  --font-sans: Inter, system-ui, -apple-system, sans-serif;
+  --font-display: 'Inter Tight', Inter, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --r-4: 4px;
+  --r-6: 6px;
+  --r-8: 8px;
+  --r-10: 10px;
+  --r-12: 12px;
+  --r-16: 16px;
+  --r-20: 20px;
+  --r-full: 999px;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
