@@ -1,0 +1,83 @@
+{
+  "_locale": "de",
+  "_label": "Deutsch",
+  "_script": "latin",
+  "_status": "needs-native-review",
+  "_note": "Machine-assisted translation. Structurally complete for the templates listed; anything missing falls back to English. Not reviewed by a native brand-voice owner — do not treat as approved copy.",
+  "templates": {
+    "privacy": {
+      "eyebrow": "Was PrivexBot anders macht",
+      "title": "Ihre Prompts verlassen\ndie Enklave nie.",
+      "body": "Die Inferenz läuft in einer Trusted Execution Environment. Weder PrivexBot noch der Modellanbieter noch Ihr Hosting-Provider können Ihre Prompts oder die Nachrichten Ihrer Nutzer lesen. Kryptografisch nachgewiesen.",
+      "stat": "TEE-attestiert"
+    },
+    "feature": {
+      "eyebrow": "Ab sofort verfügbar",
+      "title": "Visueller Chatflow-\nBuilder, v2.",
+      "body": "Knoten ziehen. Nach Intent verzweigen. Durchläufe prüfen. Der neue Builder bringt 14 Knoten mit, darunter OpenAI, Anthropic, Vektorsuche, HTTP und Webhook.",
+      "cta": "Changelog lesen"
+    },
+    "quote": {
+      "quote": "Unsere Kunden wollten KI-Suche. Sie wollten nicht, dass ihre Anfragen an fünf Anbieter gehen. PrivexBot war die einzige Plattform, mit der wir das eine zusagen konnten, ohne das andere zu akzeptieren.",
+      "author": "Maya Okafor",
+      "role": "CTO, North Loop Health"
+    },
+    "stat": {
+      "number": "14 Min.",
+      "caption": "Mittlere Zeit bis zum Deployment eines neuen Chatbots — vom leeren Workspace bis live auf Discord.",
+      "context": "Über 1.247 im April erstellte Bots.",
+      "source": "PrivexBot-Plattformmetriken, April 2026"
+    },
+    "launch": {
+      "eyebrow": "Launch-Woche · Tag 03",
+      "title": "WhatsApp-Deployments.\nAb sofort allgemein verfügbar.",
+      "body": "Verbinden Sie Ihre WhatsApp-Business-Nummer mit jedem PrivexBot-Agenten. Ende-zu-Ende-verschlüsselte Nachrichten bleiben verschlüsselt — wir sehen Ihre Kundengespräche nie.",
+      "cta": "Ersten Bot deployen"
+    },
+    "hottake": {
+      "eyebrow": "Branchenperspektive",
+      "hook": "Wenn Ihr KI-Anbieter Ihre Prompts lesen kann,",
+      "payoff": "kann er sie verkaufen, verlieren oder preisgeben.",
+      "body": "Zwischen Ihrem Kunden und einer Antwort stehen drei Unternehmen. Je weniger davon die Daten je sehen, desto sicherer Ihr Geschäft. Deshalb läuft jede PrivexBot-Inferenz in einer Hardware-Enklave."
+    },
+    "why": {
+      "eyebrow": "Warum wir PrivexBot gebaut haben",
+      "story": "2024 sahen wir zu, wie ein Krankenhaus einen KI-Assistenten einführte — und stillschweigend jede Patientenfrage an drei Anbieter schickte, die sie lesen konnten.",
+      "reframe": "Das Krankenhaus war nicht fahrlässig. Es hatte keine andere Wahl.",
+      "resolution": "Wir haben PrivexBot gebaut, um ihnen eine zu geben. Jede Inferenz läuft jetzt in einer Hardware-Enklave. Wir können Ihre Prompts nicht lesen. Ihr Modellanbieter auch nicht. Und sonst auch niemand.",
+      "signoff": "— Das PrivexBot-Team"
+    },
+    "manifesto": {
+      "eyebrow": "Woran wir glauben",
+      "line1": "Datenschutz ist kein",
+      "line2": "Feature.",
+      "line3": "Er ist das Fundament.",
+      "body": "Jedes KI-Tool am Markt verlangt Vertrauen in drei Dinge, die Sie nicht überprüfen können: den Anbieter, den Modell-Host und das Netz dazwischen. PrivexBot ersetzt Vertrauen durch Beweise. Jede Inferenz ist kryptografisch attestiert."
+    },
+    "problem": {
+      "eyebrow": "Das Problem, das wir lösen",
+      "problem": "Die meisten „privaten“ KI-Tools laden Ihre Prompts trotzdem zu Dritten hoch.",
+      "problemDetail": "Sie haben einer Datenschutzerklärung zugestimmt. Darin steht, man dürfe Ihre Daten „zur Verbesserung des Dienstes verwenden“.",
+      "solution": "PrivexBot führt jede Inferenz in einer Hardware-Enklave aus.",
+      "solutionDetail": "Nicht einmal unsere Entwickler sehen, was Sie senden. Und wir haben Belege dafür."
+    },
+    "faq": {
+      "eyebrow": "Wussten Sie schon?",
+      "question": "Wenn Sie Ihrem KI-Chatbot eine Nachricht schicken — wie viele Unternehmen dürfen sie lesen?",
+      "answer": "3",
+      "answerLabel": "Unternehmen im Durchschnitt",
+      "footer": "Mit PrivexBot: null."
+    },
+    "cta": {
+      "hook": "Vertrauen Sie KI-Anbietern keine Kundendaten mehr an.",
+      "body": "Bauen Sie Ihren ersten privaten Chatbot in 15 Minuten. Keine Kreditkarte. Keine Daten, die die Enklave verlassen.",
+      "cta": "Kostenlos starten auf privexbot.com",
+      "proof": "Im Einsatz bei Teams in Gesundheitswesen, Fintech und Recht."
+    },
+    "car1": {
+      "count": "1/5",
+      "hook": "Fünf Gründe, warum Ihr KI-Chatbot Daten preisgibt.",
+      "sub": "Weiterwischen →"
+    }
+  }
+}

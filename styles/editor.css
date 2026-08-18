@@ -312,3 +312,30 @@
     transition: all 120ms; white-space: nowrap;
   }
   .edroot .copy-link:hover { color: #fff; border-color: #5866C2; }
+
+  .edroot .locale-select {
+    width: 100%; box-sizing: border-box; padding: 9px 12px;
+    background: #161A22; border: 1px solid #1E2230; border-radius: 8px;
+    color: #F3F4F7; font-family: 'Inter', sans-serif; font-size: 13px;
+  }
+  .edroot .locale-select:focus {
+    outline: none; border-color: #5866C2; box-shadow: 0 0 0 3px rgba(57,71,168,0.3);
+  }
+  .edroot .locale-status {
+    font-size: 11px; color: #858C9D; display: flex; align-items: center;
+    gap: 6px; flex-wrap: wrap; font-family: 'JetBrains Mono', monospace;
+  }
+  .edroot .locale-badge {
+    padding: 2px 6px; border-radius: 4px; font-weight: 700; letter-spacing: 0.04em;
+    background: rgba(217,119,6,0.18); color: #FFD9A0; border: 1px solid rgba(217,119,6,0.4);
+  }
+  .edroot .locale-note { font-size: 11px; color: #5A6172; line-height: 1.45; }
+
+  .edroot .overflow-warn {
+    font-size: 11px; line-height: 1.5; color: #FFB4B6;
+    background: rgba(229,72,77,0.12); border: 1px solid rgba(229,72,77,0.4);
+    border-radius: 8px; padding: 10px 12px;
+  }
+  .edroot .overflow-warn strong { display: block; color: #fff; margin-bottom: 6px; font-size: 12px; }
+  .edroot .overflow-warn ul { margin: 0 0 6px; padding-left: 16px; }
+  .edroot .overflow-warn li { margin-bottom: 2px; }

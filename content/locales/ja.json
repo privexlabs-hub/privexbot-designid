@@ -1,0 +1,69 @@
+{
+  "_locale": "ja",
+  "_label": "日本語",
+  "_script": "ja",
+  "_status": "needs-native-review",
+  "_note": "Machine-assisted translation. Structurally complete for the templates listed; anything missing falls back to English. Not reviewed by a native brand-voice owner — do not treat as approved copy.",
+  "templates": {
+    "privacy": {
+      "eyebrow": "PrivexBot が違う理由",
+      "title": "プロンプトはエンクレーブ\nから出ません。",
+      "body": "推論は Trusted Execution Environment 内で実行されます。PrivexBot も、モデルホストも、ホスティング事業者も、お客様のプロンプトやユーザーのメッセージを読み取れません。暗号学的に検証されています。",
+      "stat": "TEE 認証済み"
+    },
+    "feature": {
+      "eyebrow": "提供開始",
+      "title": "ビジュアル\nチャットフロービルダー v2",
+      "body": "ノードをドラッグし、インテントで分岐し、実行を検証。新しいビルダーには OpenAI、Anthropic、ベクトル検索、HTTP、Webhook を含む 14 のノードが付属します。",
+      "cta": "変更履歴を読む"
+    },
+    "quote": {
+      "quote": "顧客が求めたのは AI 検索であり、その問い合わせを 5 社に共有することではありませんでした。前者に「はい」と言い、後者に「はい」と言わずに済んだ唯一のプラットフォームが PrivexBot でした。",
+      "author": "マヤ・オカフォー",
+      "role": "North Loop Health CTO"
+    },
+    "stat": {
+      "number": "14 分",
+      "caption": "新しいチャットボットの導入までの中央値 — 空のワークスペースから Discord での公開まで。",
+      "context": "4 月に作成された 1,247 件のボットの実績。",
+      "source": "PrivexBot プラットフォーム指標、2026 年 4 月"
+    },
+    "launch": {
+      "eyebrow": "ローンチウィーク · 3 日目",
+      "title": "WhatsApp への配信。\n一般提供を開始。",
+      "body": "WhatsApp Business の番号を任意の PrivexBot エージェントに接続できます。エンドツーエンドで暗号化されたメッセージは暗号化されたまま — 顧客との会話を当社が見ることはありません。",
+      "cta": "最初のボットを配信"
+    },
+    "hottake": {
+      "eyebrow": "業界の視点",
+      "hook": "AI ベンダーがプロンプトを読めるなら、",
+      "payoff": "売ることも、漏らすことも、失うこともできます。",
+      "body": "顧客と回答の間には 3 社が存在します。データを見る会社が少ないほど、事業は安全になります。だからこそ PrivexBot の推論はすべてハードウェアエンクレーブ内で実行されます。"
+    },
+    "manifesto": {
+      "eyebrow": "私たちの信念",
+      "line1": "プライバシーは",
+      "line2": "機能ではない。",
+      "line3": "それは土台です。",
+      "body": "市場のあらゆる AI ツールは、検証できない 3 つのもの — ベンダー、モデルホスト、その間のネットワーク — を信頼するよう求めます。PrivexBot は信頼を証明に置き換えます。すべての推論が暗号学的に認証されます。"
+    },
+    "faq": {
+      "eyebrow": "ご存知ですか？",
+      "question": "お気に入りの AI チャットボットにメッセージを送るとき、何社がそれを読めるのでしょうか。",
+      "answer": "3",
+      "answerLabel": "社（平均）",
+      "footer": "PrivexBot ならゼロ。"
+    },
+    "cta": {
+      "hook": "顧客データを AI ベンダーに預けるのは、もうやめましょう。",
+      "body": "最初のプライベートなチャットボットを 15 分で構築。クレジットカード不要。エンクレーブからデータは出ません。",
+      "cta": "privexbot.com で無料で開始",
+      "proof": "医療・フィンテック・法務のチームに採用されています。"
+    },
+    "car1": {
+      "count": "1/5",
+      "hook": "AI チャットボットが情報を漏らす 5 つの理由。",
+      "sub": "スワイプ →"
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "_locale": "es",
+  "_label": "Español",
+  "_script": "latin",
+  "_status": "needs-native-review",
+  "_note": "Machine-assisted translation. Structurally complete for the templates listed; anything missing falls back to English. Not reviewed by a native brand-voice owner — do not treat as approved copy.",
+  "templates": {
+    "privacy": {
+      "eyebrow": "En qué se diferencia PrivexBot",
+      "title": "Tus prompts nunca\nsalen del enclave.",
+      "body": "La inferencia se ejecuta dentro de un Trusted Execution Environment. Ni PrivexBot, ni el proveedor del modelo, ni tu proveedor de hosting pueden leer tus prompts ni los mensajes de tus usuarios. Verificado criptográficamente.",
+      "stat": "Atestiguado por TEE"
+    },
+    "feature": {
+      "eyebrow": "Ya disponible",
+      "title": "Constructor visual\nde chatflows, v2.",
+      "body": "Arrastra nodos. Ramifica por intención. Inspecciona ejecuciones. El nuevo constructor incluye 14 nodos, entre ellos OpenAI, Anthropic, búsqueda vectorial, HTTP y webhook.",
+      "cta": "Leer el changelog"
+    },
+    "quote": {
+      "quote": "Nuestros clientes nos pidieron búsqueda con IA. No nos pidieron compartir sus consultas con cinco proveedores. PrivexBot fue la única plataforma que nos dejó decir que sí a lo primero sin decir que sí a lo segundo.",
+      "author": "Maya Okafor",
+      "role": "CTO, North Loop Health"
+    },
+    "stat": {
+      "number": "14 min",
+      "caption": "Tiempo medio hasta desplegar un chatbot nuevo — de un espacio vacío a estar en vivo en Discord.",
+      "context": "Sobre 1.247 bots creados en abril.",
+      "source": "Métricas de la plataforma PrivexBot, abril de 2026"
+    },
+    "launch": {
+      "eyebrow": "Semana de lanzamiento · Día 03",
+      "title": "Despliegues en WhatsApp.\nYa disponibles para todos.",
+      "body": "Conecta tu número de WhatsApp Business a cualquier agente de PrivexBot. Los mensajes cifrados de extremo a extremo siguen cifrados: nunca vemos las conversaciones con tus clientes.",
+      "cta": "Despliega tu primer bot"
+    },
+    "hottake": {
+      "eyebrow": "Punto de vista del sector",
+      "hook": "Si tu proveedor de IA puede leer tus prompts,",
+      "payoff": "puede venderlos, filtrarlos o perderlos.",
+      "body": "Hay tres empresas entre tu cliente y una respuesta. Cuantas menos vean los datos, más seguro es tu negocio. Por eso cada inferencia de PrivexBot se ejecuta en un enclave de hardware."
+    },
+    "why": {
+      "eyebrow": "Por qué construimos PrivexBot",
+      "story": "En 2024 vimos a un hospital desplegar un asistente de IA — y enviar en silencio cada consulta de paciente a tres proveedores que podían leerla.",
+      "reframe": "El hospital no fue imprudente. No tenía otra opción.",
+      "resolution": "Construimos PrivexBot para darles una. Ahora cada inferencia ocurre dentro de un enclave de hardware. No podemos leer tus prompts. Tu proveedor del modelo tampoco. Nadie más puede.",
+      "signoff": "— El equipo de PrivexBot"
+    },
+    "manifesto": {
+      "eyebrow": "En qué creemos",
+      "line1": "La privacidad no es",
+      "line2": "una función.",
+      "line3": "Es el cimiento.",
+      "body": "Toda herramienta de IA del mercado te pide confiar en tres cosas que no puedes verificar: el proveedor, el host del modelo y la red entre ambos. PrivexBot sustituye la confianza por pruebas. Cada inferencia está atestiguada criptográficamente."
+    },
+    "problem": {
+      "eyebrow": "El problema que resolvemos",
+      "problem": "La mayoría de las herramientas de IA «privadas» siguen subiendo tus prompts a un tercero.",
+      "problemDetail": "Aceptaste una política de privacidad. La política dice que «pueden usar tus datos para mejorar el servicio».",
+      "solution": "PrivexBot ejecuta cada inferencia dentro de un enclave de hardware.",
+      "solutionDetail": "Ni nuestros ingenieros ven lo que envías. Y tenemos pruebas."
+    },
+    "faq": {
+      "eyebrow": "¿Sabías que…?",
+      "question": "Cuando envías un mensaje a tu chatbot de IA favorito, ¿cuántas empresas pueden leerlo?",
+      "answer": "3",
+      "answerLabel": "empresas, de media",
+      "footer": "Con PrivexBot: cero."
+    },
+    "cta": {
+      "hook": "Deja de confiar los datos de tus clientes a proveedores de IA.",
+      "body": "Crea tu primer chatbot privado en 15 minutos. Sin tarjeta. Sin datos que salgan del enclave.",
+      "cta": "Empieza gratis en privexbot.com",
+      "proof": "Con la confianza de equipos de salud, fintech y legal."
+    },
+    "car1": {
+      "count": "1/5",
+      "hook": "Cinco motivos por los que tu chatbot de IA filtra datos.",
+      "sub": "Desliza →"
+    }
+  }
+}

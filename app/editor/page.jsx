@@ -9,6 +9,8 @@ import '@/styles/editor.css';
 import { Icon, LaneOverrideProvider } from '@/components/brand';
 import TEMPLATES from './templates';
 import { LANES, ACCENTS, applyAccent } from './theme';
+import { LOCALES, DEFAULT_LOCALE, getLocale, localeContent } from './locales';
+import { SCRIPTS, scriptProps, isolateLtrRuns } from '@/lib/scripts';
 
 /** Build the default content map, keyed by template id. */
 function defaultContent() {
@@ -74,6 +76,7 @@ function readUrl(search) {
     activeId: TEMPLATES.some((x) => x.id === t) ? t : null,
     lane: LANES.some((l) => l.id === lane) ? lane : null,
     accent: ACCENTS.some((a) => a.id === accent) ? accent : null,
+    locale: LOCALES.some((l) => l.code === q.get('locale')) ? q.get('locale') : null,
   };
 }
 
@@ -86,6 +89,8 @@ export default function EditorPage() {
   // server has no query string and the markup would not match on hydration
   // (React #418). Read it once after mount instead.
   const [hydrated, setHydrated] = useState(false);
+  const [locale, setLocale] = useState(DEFAULT_LOCALE);
+  const [overflow, setOverflow] = useState([]);
   const [query, setQuery] = useState('');
   const [copied, setCopied] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -103,6 +108,21 @@ export default function EditorPage() {
   const tpl = TEMPLATES.find((t) => t.id === activeId);
   const Component = tpl?.Component;
   const props = content[activeId] || {};
+
+  const loc = getLocale(locale);
+  const script = scriptProps(loc.script, loc.code);
+  // Bidi: @handles, URLs and number ranges take direction from their neighbours,
+  // so inside an RTL run they scramble. Isolate them before they reach a template.
+  const localisedProps = useMemo(() => {
+    if (script.dir !== 'rtl') return props;
+    const out = {};
+    for (const [k, v] of Object.entries(props)) {
+      out[k] = typeof v === 'string' ? isolateLtrRuns(v, 'rtl') : v;
+    }
+    return out;
+  }, [props, script.dir]);
+
+  const coverage = tpl ? localeContent(locale, tpl.id, tpl.fields) : { translated: 0, total: 0 };
 
   // Fit-to-screen
   useEffect(() => {
@@ -130,6 +150,7 @@ export default function EditorPage() {
     if (u.activeId) setActiveId(u.activeId);
     if (u.lane) setLane(u.lane);
     if (u.accent) setAccent(u.accent);
+    if (u.locale) setLocale(u.locale);
     setHydrated(true);
   }, []);
 
@@ -143,12 +164,37 @@ export default function EditorPage() {
     q.set('t', activeId);
     if (lane) q.set('lane', lane);
     if (accent) q.set('accent', accent);
+    if (locale !== DEFAULT_LOCALE) q.set('locale', locale);
     window.history.replaceState(null, '', `?${q}`);
-  }, [hydrated, activeId, lane, accent]);
+  }, [hydrated, activeId, lane, accent, locale]);
 
   // Re-apply the accent after every render so React never leaves a stale colour.
   useLayoutEffect(() => {
     applyAccent(artboardRef.current?.querySelector('.artboard-export'), accent);
+  });
+
+  // Overflow detection. Artboards are fixed-size and translated copy is not:
+  // per the IBM/W3C expansion table a string of 10 characters or fewer can grow
+  // 200-300% once translated, so badges and headlines are what break, not
+  // paragraphs. Measure after layout and warn — never silently ship a clipped PNG.
+  useLayoutEffect(() => {
+    const root = artboardRef.current?.querySelector('.artboard-export');
+    if (!root) return;
+    const id = requestAnimationFrame(() => {
+      const hits = [];
+      for (const el of root.querySelectorAll('*')) {
+        if (!el.childNodes.length) continue;
+        const overX = el.scrollWidth - el.clientWidth;
+        const overY = el.scrollHeight - el.clientHeight;
+        // 1px of rounding is not an overflow; clipped containers report their own.
+        if ((overX > 1 || overY > 1) && getComputedStyle(el).overflow !== 'visible') {
+          const text = (el.textContent || '').trim().slice(0, 40);
+          if (text) hits.push({ text, overX, overY });
+        }
+      }
+      setOverflow(hits.slice(0, 4));
+    });
+    return () => cancelAnimationFrame(id);
   });
 
   const matches = useMemo(() => {
@@ -204,6 +250,17 @@ export default function EditorPage() {
       /* clipboard blocked — the URL bar already shows the same link */
     }
   };
+
+  // Changing locale reloads every template's copy from the pack, English-backfilled.
+  useEffect(() => {
+    setContent(() => {
+      const map = {};
+      TEMPLATES.forEach((t) => {
+        map[t.id] = localeContent(locale, t.id, t.fields).values;
+      });
+      return map;
+    });
+  }, [locale]);
 
   const updateField = (k, v) =>
     setContent((c) => ({ ...c, [activeId]: { ...c[activeId], [k]: v } }));
@@ -369,6 +426,8 @@ export default function EditorPage() {
           >
             <div
               className="artboard-export"
+              lang={script.lang}
+              dir={script.dir}
               style={{
                 width: tpl.w,
                 height: tpl.h,
@@ -377,10 +436,11 @@ export default function EditorPage() {
                 position: 'absolute',
                 top: 0,
                 left: 0,
+                ...script.style,
               }}
             >
               <LaneOverrideProvider lane={lane}>
-                {Component && <Component {...(tpl.preset || {})} {...props} />}
+                {Component && <Component {...(tpl.preset || {})} {...localisedProps} />}
               </LaneOverrideProvider>
             </div>
           </div>
@@ -397,6 +457,49 @@ export default function EditorPage() {
           <p className="sub">
             Changes preview live. Export at full {tpl.w}×{tpl.h}.
           </p>
+
+          <div className="ctrl-group">
+            <div className="ctrl-label">Language</div>
+            <select
+              className="locale-select"
+              value={locale}
+              onChange={(e) => setLocale(e.target.value)}
+            >
+              {LOCALES.map((l) => (
+                <option key={l.code} value={l.code}>
+                  {l.label} ({l.code})
+                </option>
+              ))}
+            </select>
+            {locale !== DEFAULT_LOCALE && (
+              <div className="locale-status">
+                <span className="locale-badge">unreviewed</span>
+                {coverage.translated}/{coverage.total} fields translated
+                {coverage.translated < coverage.total && ' · rest shown in English'}
+              </div>
+            )}
+            {loc.status === 'needs-native-review' && (
+              <div className="locale-note">
+                Machine-assisted copy. Not signed off by a native brand-voice reviewer.
+              </div>
+            )}
+          </div>
+
+          {!!overflow.length && (
+            <div className="overflow-warn">
+              <strong>Text overflows its box</strong>
+              <ul>
+                {overflow.map((o, i) => (
+                  <li key={i}>
+                    “{o.text}{o.text.length >= 40 ? '…' : ''}”
+                    {o.overY > 1 ? ` +${o.overY}px tall` : ''}
+                    {o.overX > 1 ? ` +${o.overX}px wide` : ''}
+                  </li>
+                ))}
+              </ul>
+              Shorten the copy, or export anyway and accept the clipping.
+            </div>
+          )}
 
           <div className="ctrl-group">
             <div className="ctrl-label">Lane</div>

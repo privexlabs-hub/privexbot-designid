@@ -1,0 +1,204 @@
+{
+  "_locale": "en",
+  "_label": "English",
+  "_script": "latin",
+  "_status": "source",
+  "_note": "Generated from the template defaults by scripts/extract-locale.mjs. Do not hand-edit.",
+  "templates": {
+    "privacy": {
+      "eyebrow": "How PrivexBot is different",
+      "title": "Your prompts never\nleave the enclave.",
+      "body": "Inference runs inside a Trusted Execution Environment. PrivexBot, the model host, and your hosting provider cannot read your prompts or your user's messages. Cryptographically verified.",
+      "stat": "TEE-attested"
+    },
+    "feature": {
+      "eyebrow": "Now shipping",
+      "title": "Visual chatflow\nbuilder, v2.",
+      "body": "Drag nodes. Branch on intent. Inspect runs. The new builder ships with 14 nodes including OpenAI, Anthropic, vector search, HTTP, and webhook.",
+      "cta": "Read the changelog"
+    },
+    "quote": {
+      "quote": "Our customers asked us to add AI search. They did not ask us to share their queries with five vendors. PrivexBot was the only platform that let us say yes to one without saying yes to the other.",
+      "author": "Maya Okafor",
+      "role": "CTO, North Loop Health"
+    },
+    "stat": {
+      "number": "14 min",
+      "caption": "Median time-to-deploy for a new chatbot — from blank workspace to live on Discord.",
+      "context": "Across 1,247 bots created in April.",
+      "source": "PrivexBot platform metrics, April 2026"
+    },
+    "launch": {
+      "eyebrow": "Launch week · Day 03",
+      "title": "WhatsApp deploys.\nNow generally available.",
+      "body": "Connect your WhatsApp Business number to any PrivexBot agent. End-to-end encrypted messages stay encrypted — we never see your customer conversations.",
+      "cta": "Deploy your first bot"
+    },
+    "hottake": {
+      "eyebrow": "Industry pov",
+      "hook": "If your AI vendor can read your prompts,",
+      "payoff": "they can sell them, leak them, or lose them.",
+      "body": "There are three companies between your customer and an answer. The fewer of them that ever see the data, the safer your business. That's why every PrivexBot inference runs inside a hardware enclave."
+    },
+    "meme": {
+      "setup": "Your AI vendor:",
+      "punchline": "\"We take privacy seriously.\"",
+      "reveal": "Also your AI vendor:",
+      "closer": "*reads your prompts to train their next model*"
+    },
+    "blog": {
+      "category": "Engineering",
+      "readTime": "8 min",
+      "title": "Why we built our chatflow engine on a CRDT.",
+      "excerpt": "Real-time collaboration sounds great until two engineers drag the same node. Here's how we built collaborative editing for visual workflows — and the three mistakes we made first.",
+      "author": "Sasha Chen · Staff Engineer"
+    },
+    "why": {
+      "eyebrow": "Why we built PrivexBot",
+      "story": "In 2024 we watched a hospital deploy an AI assistant — and quietly send every patient question to three vendors who could read them.",
+      "reframe": "The hospital wasn't reckless. They had no other choice.",
+      "resolution": "We built PrivexBot to give them one. Now every inference happens inside a hardware enclave. We can't read your prompts. Neither can your model host. Neither can anyone else.",
+      "signoff": "— The PrivexBot team"
+    },
+    "manifesto": {
+      "eyebrow": "What we believe",
+      "line1": "Privacy is not",
+      "line2": "a feature.",
+      "line3": "It's the foundation.",
+      "body": "Every AI tool on the market asks you to trust three things you can't verify: the vendor, the model host, and the network in between. PrivexBot replaces trust with proof. Every inference is cryptographically attested."
+    },
+    "problem": {
+      "eyebrow": "The problem we solve",
+      "problem": "Most \"private\" AI tools still upload your prompts to a third party.",
+      "problemDetail": "You agreed to a privacy policy. The privacy policy says they \"may use your data to improve our service.\"",
+      "solution": "PrivexBot runs every inference inside a hardware enclave.",
+      "solutionDetail": "Even our engineers can't see what you send. We have receipts to prove it."
+    },
+    "faq": {
+      "eyebrow": "Did you know?",
+      "question": "When you send a message to your favourite AI chatbot, how many companies get to read it?",
+      "answer": "3",
+      "answerLabel": "companies, on average",
+      "footer": "With PrivexBot: zero."
+    },
+    "usecase": {
+      "industry": "Healthcare",
+      "headline": "How a 200-bed hospital deployed AI patient triage without breaking HIPAA.",
+      "quote": "\"PrivexBot was the only platform where our compliance team didn't require a six-month audit.\"",
+      "quoteBy": "— Director of Clinical IT, North Loop Health"
+    },
+    "receipt": {
+      "eyebrow": "Proof, not promises",
+      "title": "Here's the cryptographic receipt for your last inference.",
+      "body": "Every PrivexBot inference signs an attestation that proves:\n· which model ran\n· that it ran inside a verified enclave\n· that no one logged the prompt\n\nYou can verify it yourself. Or we can."
+    },
+    "cta": {
+      "hook": "Stop trusting AI vendors with your customer data.",
+      "body": "Build your first private chatbot in 15 minutes. No credit card. No data leaving the enclave.",
+      "cta": "Start free at privexbot.com",
+      "proof": "Trusted by teams in healthcare, fintech, and legal."
+    },
+    "community": {
+      "eyebrow": "Community spotlight",
+      "shoutout": "Built with PrivexBot:",
+      "callout": "Add your bot to the registry → privexbot.com/community"
+    },
+    "compare": {
+      "eyebrow": "PrivexBot vs the alternatives",
+      "competitor": "Typical AI platform"
+    },
+    "car1": {
+      "count": "1/5",
+      "hook": "Five reasons your AI chatbot is leaking data.",
+      "sub": "Swipe →"
+    },
+    "car2": {
+      "count": "2/5",
+      "num": "01",
+      "reason": "Your model vendor logs every prompt for \"model improvement\".",
+      "body": "OpenAI, Anthropic, and Google all retain prompts for 30–90 days by default. Even on enterprise plans, opt-out is a request — not a guarantee."
+    },
+    "car5": {
+      "count": "5/5",
+      "title": "The fix is simpler than you think.",
+      "cta": "Try PrivexBot free"
+    },
+    "st-launch": {
+      "badge": "Now shipping",
+      "eyebrow": "Launch week · Day 03",
+      "line1": "WhatsApp",
+      "line2": "deploys.",
+      "sub": "Generally available.",
+      "body": "Connect your WhatsApp Business number to any agent. Encryption stays end-to-end.",
+      "cta": "Deploy your first bot"
+    },
+    "st-stat": {
+      "eyebrow": "April · build-in-public",
+      "number": "14",
+      "unit": "min",
+      "line1": "Median time-to-deploy",
+      "line2": "for a new chatbot.",
+      "body": "From blank workspace to live on Discord. Across 1,247 bots created last month.",
+      "source": "privexbot.com/changelog"
+    },
+    "st-quote": {
+      "eyebrow": "Customer story · North Loop Health",
+      "quote": "PrivexBot was the only platform that let us say yes to AI search without saying yes to leaking customer queries.",
+      "author": "Maya Okafor",
+      "role": "CTO, North Loop Health"
+    },
+    "st-privacy": {
+      "badge": "TEE-attested",
+      "line1": "Your prompts",
+      "line2": "never leave",
+      "line3": "the enclave.",
+      "body": "Tap to read how PrivexBot encrypts every inference.",
+      "cta": "Learn more"
+    },
+    "th-tutorial": {
+      "topic": "Build a Discord support bot",
+      "duration": "14 min",
+      "difficulty": "Beginner"
+    },
+    "th-hottake": {
+      "hook": "AI vendors are LYING",
+      "payoff": "about your data.",
+      "episode": "EP 04"
+    },
+    "th-launch": {
+      "feature": "WhatsApp\ndeploys",
+      "status": "NOW LIVE"
+    },
+    "x-header": {
+      "badge": "Inference runs in a Trusted Execution Environment",
+      "line1": "Build chatbots that",
+      "line2": "never see your data.",
+      "body": "Visual chatflows, RAG knowledge bases, and one-click deploys to Discord, Slack, Telegram, WhatsApp, web."
+    },
+    "li-cover": {
+      "eyebrow": "Privacy-first AI automation",
+      "line1": "Build, deploy,",
+      "line2": "and trust your AI.",
+      "body": "No-code chatflows. Encrypted inference. Cross-platform deployment in a single workspace.",
+      "wordmark": "PRIVEXBOT"
+    },
+    "twitch": {
+      "badge": "Live · Building in public",
+      "title": "Tuesdays at 14:00 UTC.",
+      "body": "Live coding sessions, RAG deep dives, and chaotic deploys. Pop in."
+    },
+    "fb-cover": {
+      "eyebrow": "What we make",
+      "line1": "AI that",
+      "emphasis": "respects",
+      "line2": "your customers' data.",
+      "body": "Build chatbots in fifteen minutes. Deploy to web, Discord, Slack, Telegram, WhatsApp — all from one workspace.",
+      "url": "privexbot.com",
+      "wordmark": "PRIVEXBOT"
+    },
+    "yt-banner": {
+      "wordmark": "PRIVEXBOT",
+      "headline": "The privacy-first AI channel."
+    }
+  }
+}
