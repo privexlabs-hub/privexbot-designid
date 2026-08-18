@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>PrivexBot — Post Editor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="brand.css" />
+<style>
+  html, body { margin: 0; height: 100%; background: #0F1218; }
+  body { font-family: 'Inter', system-ui, sans-serif; color: #F3F4F7; -webkit-font-smoothing: antialiased; }
+  #root { min-height: 100vh; }
+
+  .editor {
+    display: grid;
+    grid-template-columns: 280px 1fr 340px;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Left: template picker */
+  .picker {
+    background: #0A0C10;
+    border-right: 1px solid #1E2230;
+    padding: 24px 20px;
+    overflow-y: auto;
+  }
+  .picker h1 {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .picker .tagline { font-size: 12px; color: #858C9D; margin: 0 0 24px; }
+  .picker .group-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #5A6172;
+    margin: 18px 6px 8px;
+  }
+  .picker .tmpl-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: #D9DCE3;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    transition: all 120ms cubic-bezier(0.2,0.7,0.2,1);
+  }
+  .picker .tmpl-btn:hover { background: rgba(255,255,255,0.04); color: #fff; }
+  .picker .tmpl-btn.active {
+    background: rgba(57,71,168,0.18);
+    border-color: rgba(136,146,216,0.4);
+    color: #fff;
+  }
+  .picker .tmpl-btn .dot {
+    width: 8px; height: 8px; border-radius: 999px; flex-shrink: 0;
+  }
+
+  /* Center: canvas */
+  .stage {
+    background: #161A22;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .stage-meta {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid #1E2230;
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #B4BAC6;
+    letter-spacing: 0.04em;
+    z-index: 10;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .stage-meta .live-dot {
+    width: 6px; height: 6px; border-radius: 999px; background: #7DC79A;
+    box-shadow: 0 0 8px #7DC79A;
+  }
+  .artboard-wrap {
+    box-shadow: 0 30px 80px -20px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  /* Right: controls */
+  .controls {
+    background: #0A0C10;
+    border-left: 1px solid #1E2230;
+    padding: 24px 20px;
+    overflow-y: auto;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .controls h2 {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+    color: #fff;
+  }
+  .controls .sub { font-size: 12px; color: #858C9D; margin: -8px 0 4px; }
+  .ctrl-group { display: flex; flex-direction: column; gap: 8px; }
+  .ctrl-label {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #5A6172;
+  }
+  .ctrl input, .ctrl textarea, .ctrl select {
+    width: 100%;
+    padding: 10px 12px;
+    background: #161A22;
+    border: 1px solid #1E2230;
+    border-radius: 8px;
+    color: #F3F4F7;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    transition: border-color 120ms;
+    box-sizing: border-box;
+  }
+  .ctrl input:focus, .ctrl textarea:focus, .ctrl select:focus {
+    outline: none;
+    border-color: #5866C2;
+    box-shadow: 0 0 0 3px rgba(57,71,168,0.3);
+  }
+  .ctrl textarea { resize: vertical; min-height: 64px; font-family: inherit; }
+
+  .swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .swatch {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 120ms;
+    position: relative;
+  }
+  .swatch.active { border-color: #fff; }
+  .swatch:hover { transform: scale(1.05); }
+
+  .export-btn {
+    width: 100%;
+    padding: 14px 16px;
+    background: #fff;
+    color: #0A0C10;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: all 120ms cubic-bezier(0.2,0.7,0.2,1);
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .export-btn:hover { background: #B6BEEA; }
+  .export-btn:active { transform: translateY(1px); }
+  .export-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .kit-link {
+    display: flex; align-items: center; gap: 8px;
+    color: #858C9D;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 8px 0;
+    border-top: 1px solid #1E2230;
+    margin-top: 12px;
+  }
+  .kit-link:hover { color: #fff; }
+
+  /* Scaling for stage */
+  .scale-wrap { transform-origin: center; transition: transform 200ms cubic-bezier(0.2,0.7,0.2,1); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="vendor/react.development.js"></script>
+<script src="vendor/react-dom.development.js"></script>
+<script src="vendor/babel.min.js"></script>
+<script src="vendor/html-to-image.js"></script>
+
+<script type="text/babel" src="components/brand.jsx"></script>
+<script type="text/babel" src="components/posts.jsx"></script>
+<script type="text/babel" src="components/stories-thumbs.jsx"></script>
+<script type="text/babel" src="components/avatars-covers.jsx"></script>
+<script type="text/babel" src="components/engagement-posts.jsx"></script>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useMemo } = React;
+
+// Catalog of editable templates.
+const TEMPLATES = [
+  // === Square posts ===
+  { id: 'privacy', group: 'Square · 1080×1080', name: 'Privacy / TEE post', dot: '#5866C2', w: 1080, h: 1080,
+    Component: window.PrivacyPost,
+    fields: [
+      { k: 'eyebrow', label: 'Eyebrow', type: 'text', def: 'How PrivexBot is different' },
+      { k: 'title', label: 'Title (use newline)', type: 'textarea', def: 'Your prompts never\nleave the enclave.' },
+      { k: 'body', label: 'Body', type: 'textarea', def: 'Inference runs inside a Trusted Execution Environment. PrivexBot, the model host, and your hosting provider cannot read your prompts or your user\'s messages. Cryptographically verified.' },
+      { k: 'stat', label: 'Badge', type: 'text', def: 'TEE-attested' },
+    ],
+  },
+  { id: 'feature', group: 'Square · 1080×1080', name: 'Feature announcement', dot: '#3947A8', w: 1080, h: 1080,
+    Component: window.FeaturePost,
+    fields: [
+      { k: 'eyebrow', label: 'Eyebrow', type: 'text', def: 'Now shipping' },
+      { k: 'title', label: 'Title', type: 'textarea', def: 'Visual chatflow\nbuilder, v2.' },
+      { k: 'body', label: 'Body', type: 'textarea', def: 'Drag nodes. Branch on intent. Inspect runs. The new builder ships with 14 nodes including OpenAI, Anthropic, vector search, HTTP, and webhook.' },
+      { k: 'cta', label: 'CTA', type: 'text', def: 'Read the changelog' },
+    ],
+  },
+  { id: 'quote', group: 'Square · 1080×1080', name: 'Customer quote', dot: '#0A0C10', w: 1080, h: 1080,
+    Component: window.QuotePost,
+    fields: [
+      { k: 'quote', label: 'Quote', type: 'textarea', def: 'Our customers asked us to add AI search. They did not ask us to share their queries with five vendors. PrivexBot was the only platform that let us say yes to one without saying yes to the other.' },
+      { k: 'author', label: 'Author', type: 'text', def: 'Maya Okafor' },
+      { k: 'role', label: 'Role', type: 'text', def: 'CTO, North Loop Health' },
+    ],
+  },
+  { id: 'stat', group: 'Square · 1080×1080', name: 'Big stat card', dot: '#3E8A5E', w: 1080, h: 1080,
+    Component: window.StatPost,
+    fields: [
+      { k: 'number', label: 'Number', type: 'text', def: '14 min' },
+      { k: 'caption', label: 'Caption', type: 'textarea', def: 'Median time-to-deploy for a new chatbot — from blank workspace to live on Discord.' },
+      { k: 'context', label: 'Context', type: 'text', def: 'Across 1,247 bots created in April.' },
+      { k: 'source', label: 'Source', type: 'text', def: 'PrivexBot platform metrics, April 2026' },
+    ],
+  },
+  { id: 'launch', group: 'Square · 1080×1080', name: 'Launch / milestone', dot: '#7DC79A', w: 1080, h: 1080,
+    Component: window.LaunchPost,
+    fields: [
+      { k: 'eyebrow', label: 'Eyebrow', type: 'text', def: 'Launch week · Day 03' },
+      { k: 'title', label: 'Title', type: 'textarea', def: 'WhatsApp deploys.\nNow generally available.' },
+      { k: 'body', label: 'Body', type: 'textarea', def: 'Connect your WhatsApp Business number to any PrivexBot agent. End-to-end encrypted messages stay encrypted — we never see your customer conversations.' },
+      { k: 'cta', label: 'CTA', type: 'text', def: 'Deploy your first bot' },
+    ],
+  },
+  { id: 'hottake', group: 'Square · 1080×1080', name: 'Industry hot take', dot: '#3947A8', w: 1080, h: 1080,
+    Component: window.HotTakePost,
+    fields: [
+      { k: 'eyebrow', label: 'Eyebrow', type: 'text', def: 'Industry pov' },
+      { k: 'hook', label: 'Hook', type: 'text', def: 'If your AI vendor can read your prompts,' },
+      { k: 'payoff', label: 'Payoff', type: 'text', def: 'they can sell them, leak them, or lose them.' },
+      { k: 'body', label: 'Body', type: 'textarea', def: 'There are three companies between your customer and an answer. The fewer of them that ever see the data, the safer your business. That\'s why every PrivexBot inference runs inside a hardware enclave.' },
+    ],
+  },
+  { id: 'meme', group: 'Square · 1080×1080', name: 'Lighthearted / meme', dot: '#D97706', w: 1080, h: 1080,
+    Component: window.MemePost,
+    fields: [
+      { k: 'setup', label: 'Setup', type: 'text', def: 'Your AI vendor:' },
+      { k: 'punchline', label: 'Punchline', type: 'text', def: '"We take privacy seriously."' },
+      { k: 'reveal', label: 'Reveal', type: 'text', def: 'Also your AI vendor:' },
+      { k: 'closer', label: 'Closer', type: 'text', def: '*reads your prompts to train their next model*' },
+    ],
+  },
+  { id: 'blog', group: 'Square · 1080×1080', name: 'Blog promo', dot: '#5866C2', w: 1080, h: 1080,
+    Component: window.BlogPromoPost,
+    fields: [
+      { k: 'category', label: 'Category', type: 'text', def: 'Engineering' },
+      { k: 'readTime', label: 'Read time', type: 'text', def: '8 min' },
+      { k: 'title', label: 'Title', type: 'textarea', def: 'Why we built our chatflow engine on a CRDT.' },
+      { k: 'excerpt', label: 'Excerpt', type: 'textarea', def: 'Real-time collaboration sounds great until two engineers drag the same node. Here\'s how we built collaborative editing for visual workflows — and the three mistakes we made first.' },
+      { k: 'author', label: 'Author', type: 'text', def: 'Sasha Chen · Staff Engineer' },
+    ],
+  },
+  // === Engagement / mission posts ===
+  { id: 'why', group: 'Engagement · 1080×1080', name: 'Why we built it (founder story)', dot: '#3947A8', w: 1080, h: 1080,
+    Component: window.WhyBuiltPost,
+    fields: [
+      { k: 'eyebrow', label: 'Eyebrow', type: 'text', def: 'Why we built PrivexBot' },
+      { k: 'story', label: 'Setup', type: 'textarea', def: 'In 2024 we watched a hospital deploy an AI assistant — and quietly send every patient question to three vendors who could read them.' },
+      { k: 'reframe', label: 'Reframe (highlighted)', type: 'textarea', def: 'The hospital wasn\'t reckless. They had no other choice.' },
+      { k: 'resolution', label: 'Resolution', type: 'textarea', def: 'We built PrivexBot to give them one. Now every inference happens inside a hardware enclave. We can\'t read your prompts. Neither can your model host. Neither can anyone else.' },
+      { k: 'signoff', label: 'Sign-off', type: 'text', def: '— The PrivexBot team' },
+    ],
+  },
+  { id: 'manifesto', group: 'Engagement · 1080×1080', name: 'Manifesto · what we believe', dot: '#0A0C10', w: 1080, h: 1080,
+    Component: window.ManifestoPost,
+    fields: [
+      { k: 'eyebrow', label: 'Eyebrow', type: 'text', def: 'What we believe' },
+      { k: 'line1', label: 'Line 1', type: 'text', def: 'Privacy is not' },
+      { k: 'line2', label: 'Line 2 (crossed-out)', type: 'text', def: 'a feature.' },
+      { k: 'line3', label: 'Line 3 (highlight)', type: 'text', def: 'It\'s the foundation.' },
+      { k: 'body', label: 'Body', type: 'textarea', def: 'Every AI tool on the market asks you to trust three things you can\'t verify: the vendor, the model host, and the network in between. PrivexBot replaces trust with proof. Every inference is cryptographically attested.' },
+    ],
+  },
+  { id: 'problem', group: 'Engagement · 1080×1080', name: 'Problem / solution split', dot: '#E5484D', w: 1080, h: 1080,
+    Component: window.ProblemSolutionPost,
+    fields: [
+      { k: 'eyebrow', label: 'Eyebrow', type: 'text', def: 'The problem we solve' },
+      { k: 'problem', label: 'Problem', type: 'textarea', def: 'Most "private" AI tools still upload your prompts to a third party.' },
+      { k: 'problemDetail', label: 'Problem detail', type: 'textarea', def: 'You agreed to a privacy policy. The privacy policy says they "may use your data to improve our service."' },
+      { k: 'solution', label: 'Solution', type: 'textarea', def: 'PrivexBot runs every inference inside a hardware enclave.' },
+      { k: 'solutionDetail', label: 'Solution detail', type: 'textarea', def: 'Even our engineers can\'t see what you send. We have receipts to prove it.' },
+    ],
+  },
+  { id: 'faq', group: 'Engagement · 1080×1080', name: 'Did you know · educational', dot: '#3E8A5E', w: 1080, h: 1080,
+    Component: window.FAQPost,
+    fields: [
+      { k: 'eyebrow', label: 'Eyebrow', type: 'text', def: 'Did you know?' },
+      { k: 'question', label: 'Question', type: 'textarea', def: 'When you send a message to your favourite AI chatbot, how many companies get to read it?' },
+      { k: 'answer', label: 'Answer (big number)', type: 'text', def: '3' },
+      { k: 'answerLabel', label: 'Answer label', type: 'text', def: 'companies, on average' },
+      { k: 'footer', label: 'Footer', type: 'text', def: 'With PrivexBot: zero.' },
+    ],
+  },
+  { id: 'usecase', group: 'Engagement · 1080×1080', name: 'Use case · healthcare', dot: '#5866C2', w: 1080, h: 1080,
+    Component: window.UseCasePost,
+    fields: [
+      { k: 'industry', label: 'Industry', type: 'text', def: 'Healthcare' },
+      { k: 'headline', label: 'Headline', type: 'textarea', def: 'How a 200-bed hospital deployed AI patient triage without breaking HIPAA.' },
+      { k: 'quote', label: 'Quote', type: 'textarea', def: '"PrivexBot was the only platform where our compliance team didn\'t require a six-month audit."' },
+      { k: 'quoteBy', label: 'Quote by', type: 'text', def: '— Director of Clinical IT, North Loop Health' },
+    ],
+  },
+  { id: 'receipt', group: 'Engagement · 1080×1080', name: 'Attestation receipt · proof', dot: '#3E8A5E', w: 1080, h: 1080,
+    Component: window.ReceiptPost,
+    fields: [
+      { k: 'eyebrow', label: 'Eyebrow', type: 'text', def: 'Proof, not promises' },
+      { k: 'title', label: 'Title', type: 'textarea', def: 'Here\'s the cryptographic receipt for your last inference.' },
+      { k: 'body', label: 'Body (use \\n for line breaks)', type: 'textarea', def: 'Every PrivexBot inference signs an attestation that proves:\n· which model ran\n· that it ran inside a verified enclave\n· that no one logged the prompt\n\nYou can verify it yourself. Or we can.' },
+    ],
+  },
+  { id: 'cta', group: 'Engagement · 1080×1080', name: 'CTA · sign up', dot: '#3947A8', w: 1080, h: 1080,
+    Component: window.CTAPost,
+    fields: [
+      { k: 'hook', label: 'Hook', type: 'textarea', def: 'Stop trusting AI vendors with your customer data.' },
+      { k: 'body', label: 'Body', type: 'textarea', def: 'Build your first private chatbot in 15 minutes. No credit card. No data leaving the enclave.' },
+      { k: 'cta', label: 'CTA', type: 'text', def: 'Start free at privexbot.com' },
+      { k: 'proof', label: 'Proof', type: 'text', def: 'Trusted by teams in healthcare, fintech, and legal.' },
+    ],
+  },
+  { id: 'community', group: 'Engagement · 1080×1080', name: 'Community spotlight', dot: '#0A0C10', w: 1080, h: 1080,
+    Component: window.CommunityPost, fields: [],
+  },
+  { id: 'compare', group: 'Engagement · 1080×1080', name: 'Comparison · vs alternatives', dot: '#5866C2', w: 1080, h: 1080,
+    Component: window.ComparisonPost, fields: [],
+  },
+  // Carousel slides
+  { id: 'car1', group: 'Carousel · 1080×1080', name: 'Carousel · Slide 1 (hook)', dot: '#3947A8', w: 1080, h: 1080,
+    Component: window.CarouselSlide1,
+    fields: [
+      { k: 'count', label: 'Count badge', type: 'text', def: '1/5' },
+      { k: 'hook', label: 'Hook', type: 'textarea', def: 'Five reasons your AI chatbot is leaking data.' },
+      { k: 'sub', label: 'Sub-CTA', type: 'text', def: 'Swipe →' },
+    ],
+  },
+  { id: 'car2', group: 'Carousel · 1080×1080', name: 'Carousel · Slide 2 (reason)', dot: '#5866C2', w: 1080, h: 1080,
+    Component: window.CarouselSlide2,
+    fields: [
+      { k: 'count', label: 'Count badge', type: 'text', def: '2/5' },
+      { k: 'num', label: 'Reason number', type: 'text', def: '01' },
+      { k: 'reason', label: 'Reason title', type: 'textarea', def: 'Your model vendor logs every prompt for "model improvement".' },
+      { k: 'body', label: 'Body', type: 'textarea', def: 'OpenAI, Anthropic, and Google all retain prompts for 30–90 days by default. Even on enterprise plans, opt-out is a request — not a guarantee.' },
+    ],
+  },
+  { id: 'car5', group: 'Carousel · 1080×1080', name: 'Carousel · Slide 5 (close)', dot: '#3947A8', w: 1080, h: 1080,
+    Component: window.CarouselSlide5,
+    fields: [
+      { k: 'count', label: 'Count badge', type: 'text', def: '5/5' },
+      { k: 'title', label: 'Title', type: 'textarea', def: 'The fix is simpler than you think.' },
+      { k: 'cta', label: 'CTA', type: 'text', def: 'Try PrivexBot free' },
+    ],
+  },
+  // === Vertical ===
+  { id: 'st-launch', group: 'Vertical · 1080×1920', name: 'Story / Reel · Launch', dot: '#3947A8', w: 1080, h: 1920,
+    Component: window.StoryLaunch, fields: [] },
+  { id: 'st-stat', group: 'Vertical · 1080×1920', name: 'Story / Reel · Big stat', dot: '#3E8A5E', w: 1080, h: 1920,
+    Component: window.StoryStat, fields: [] },
+  { id: 'st-quote', group: 'Vertical · 1080×1920', name: 'Story / Reel · Quote', dot: '#0A0C10', w: 1080, h: 1920,
+    Component: window.StoryQuote, fields: [] },
+  { id: 'st-privacy', group: 'Vertical · 1080×1920', name: 'Story / Reel · Privacy', dot: '#5866C2', w: 1080, h: 1920,
+    Component: window.StoryPrivacy, fields: [] },
+  // === Thumbnails ===
+  { id: 'th-tutorial', group: 'YouTube · 1280×720', name: 'Thumbnail · Tutorial', dot: '#3947A8', w: 1280, h: 720,
+    Component: window.ThumbnailTutorial,
+    fields: [
+      { k: 'topic', label: 'Topic', type: 'text', def: 'Build a Discord support bot' },
+      { k: 'duration', label: 'Duration', type: 'text', def: '14 min' },
+      { k: 'difficulty', label: 'Difficulty', type: 'text', def: 'Beginner' },
+    ],
+  },
+  { id: 'th-hottake', group: 'YouTube · 1280×720', name: 'Thumbnail · Hot take', dot: '#0A0C10', w: 1280, h: 720,
+    Component: window.ThumbnailHotTake,
+    fields: [
+      { k: 'hook', label: 'Hook', type: 'text', def: 'AI vendors are LYING' },
+      { k: 'payoff', label: 'Payoff', type: 'text', def: 'about your data.' },
+      { k: 'episode', label: 'Episode', type: 'text', def: 'EP 04' },
+    ],
+  },
+  { id: 'th-launch', group: 'YouTube · 1280×720', name: 'Thumbnail · Launch', dot: '#3E8A5E', w: 1280, h: 720,
+    Component: window.ThumbnailLaunch,
+    fields: [
+      { k: 'feature', label: 'Feature (use \\n)', type: 'textarea', def: 'WhatsApp\ndeploys' },
+      { k: 'status', label: 'Status', type: 'text', def: 'NOW LIVE' },
+    ],
+  },
+  // === Covers ===
+  { id: 'x-header', group: 'Cover · Banners', name: 'X / Twitter header', dot: '#5866C2', w: 1500, h: 500,
+    Component: window.XHeader, fields: [] },
+  { id: 'li-cover', group: 'Cover · Banners', name: 'LinkedIn cover', dot: '#3947A8', w: 1584, h: 396,
+    Component: window.LinkedInCover, fields: [] },
+  { id: 'twitch', group: 'Cover · Banners', name: 'Twitch banner', dot: '#E5484D', w: 1200, h: 480,
+    Component: window.TwitchBanner, fields: [] },
+];
+
+function App() {
+  const [activeId, setActiveId] = useState(TEMPLATES[0].id);
+  const [content, setContent] = useState(() => {
+    // build defaults map keyed by template id
+    const map = {};
+    TEMPLATES.forEach((t) => {
+      map[t.id] = {};
+      (t.fields || []).forEach((f) => { map[t.id][f.k] = f.def; });
+    });
+    return map;
+  });
+  const [exporting, setExporting] = useState(false);
+  const artboardRef = useRef(null);
+  const stageRef = useRef(null);
+  const [scale, setScale] = useState(0.5);
+
+  const tpl = TEMPLATES.find((t) => t.id === activeId);
+  const Component = tpl?.Component;
+  const props = content[activeId] || {};
+
+  // Fit-to-screen scale calc
+  useEffect(() => {
+    if (!stageRef.current || !tpl) return;
+    const calc = () => {
+      const stage = stageRef.current;
+      if (!stage) return;
+      const padding = 80;
+      const availW = stage.clientWidth - padding * 2;
+      const availH = stage.clientHeight - padding * 2;
+      const s = Math.min(availW / tpl.w, availH / tpl.h, 1);
+      setScale(s);
+    };
+    calc();
+    const ro = new ResizeObserver(calc);
+    ro.observe(stageRef.current);
+    return () => ro.disconnect();
+  }, [activeId, tpl]);
+
+  // group templates by group
+  const grouped = useMemo(() => {
+    const g = {};
+    TEMPLATES.forEach((t) => {
+      g[t.group] = g[t.group] || [];
+      g[t.group].push(t);
+    });
+    return g;
+  }, []);
+
+  const updateField = (k, v) => {
+    setContent((c) => ({ ...c, [activeId]: { ...c[activeId], [k]: v } }));
+  };
+
+  const exportPng = async () => {
+    if (!artboardRef.current || !window.htmlToImage) return;
+    setExporting(true);
+    try {
+      const node = artboardRef.current.querySelector('.artboard-export');
+      if (!node) return;
+      // Temporarily reset transform for capture
+      const dataUrl = await window.htmlToImage.toPng(node, {
+        pixelRatio: 1,
+        cacheBust: true,
+        width: tpl.w,
+        height: tpl.h,
+      });
+      const link = document.createElement('a');
+      link.download = `privexbot-${tpl.id}-${Date.now()}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (e) {
+      console.error('Export failed', e);
+      alert('Export failed: ' + e.message);
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  return (
+    <div className="editor">
+      {/* Picker */}
+      <aside className="picker">
+        <h1>
+          <Icon color="white" size={22} />
+          <span>Post editor</span>
+        </h1>
+        <p className="tagline">Pick a template. Edit text. Export PNG.</p>
+
+        {Object.entries(grouped).map(([group, items]) => (
+          <div key={group}>
+            <div className="group-label">{group}</div>
+            {items.map((t) => (
+              <button
+                key={t.id}
+                className={`tmpl-btn ${activeId === t.id ? 'active' : ''}`}
+                onClick={() => setActiveId(t.id)}
+              >
+                <span className="dot" style={{ background: t.dot }} />
+                <span>{t.name}</span>
+              </button>
+            ))}
+          </div>
+        ))}
+
+        <a className="kit-link" href="index.html">
+          ← Back to full brand kit
+        </a>
+      </aside>
+
+      {/* Stage */}
+      <div className="stage" ref={stageRef}>
+        <div className="stage-meta">
+          <span className="live-dot"></span>
+          <span>{tpl.name}</span>
+          <span style={{ color: '#5A6172' }}>·</span>
+          <span style={{ color: '#5A6172' }}>{tpl.w} × {tpl.h}</span>
+          <span style={{ color: '#5A6172' }}>·</span>
+          <span style={{ color: '#5A6172' }}>{Math.round(scale * 100)}%</span>
+        </div>
+        <div ref={artboardRef} style={{ width: tpl.w * scale, height: tpl.h * scale, position: 'relative' }}>
+          <div
+            className="artboard-export"
+            style={{
+              width: tpl.w,
+              height: tpl.h,
+              transform: `scale(${scale})`,
+              transformOrigin: 'top left',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+            }}
+          >
+            {Component && <Component {...props} />}
+          </div>
+        </div>
+      </div>
+
+      {/* Controls */}
+      <aside className="controls">
+        <h2>Edit</h2>
+        <p className="sub">Changes preview live. Export at full {tpl.w}×{tpl.h}.</p>
+
+        {(tpl.fields || []).length === 0 && (
+          <div style={{ padding: '20px 16px', background: '#161A22', border: '1px solid #1E2230', borderRadius: 10, fontSize: 12, color: '#858C9D', lineHeight: 1.5 }}>
+            This template ships fixed — duplicate it from the brand kit if you want to edit the markup.
+          </div>
+        )}
+
+        {(tpl.fields || []).map((f) => (
+          <div key={f.k} className="ctrl ctrl-group">
+            <div className="ctrl-label">{f.label}</div>
+            {f.type === 'textarea' ? (
+              <textarea
+                rows={3}
+                value={props[f.k] ?? ''}
+                onChange={(e) => updateField(f.k, e.target.value)}
+              />
+            ) : (
+              <input
+                type="text"
+                value={props[f.k] ?? ''}
+                onChange={(e) => updateField(f.k, e.target.value)}
+              />
+            )}
+          </div>
+        ))}
+
+        <button className="export-btn" onClick={exportPng} disabled={exporting}>
+          {exporting ? 'Exporting…' : (
+            <>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Export PNG
+            </>
+          )}
+        </button>
+      </aside>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

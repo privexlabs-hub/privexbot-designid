@@ -1,0 +1,277 @@
+/* Editor styles, lifted from _source/editor.html's <style> block.
+   Every selector is prefixed with .edroot and the original
+   html/body/#root rules retarget that wrapper, so this sheet cannot
+   bleed onto the canvas or playbook routes after a client-side nav.
+   Rule bodies are unchanged. */
+
+  .edroot { margin: 0; height: 100%; background: #0F1218; }
+  .edroot { font-family: 'Inter', system-ui, sans-serif; color: #F3F4F7; -webkit-font-smoothing: antialiased; }
+  .edroot { min-height: 100vh; }
+
+  .edroot .editor {
+    display: grid;
+    grid-template-columns: 280px 1fr 340px;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Left: template picker */
+  .edroot .picker {
+    background: #0A0C10;
+    border-right: 1px solid #1E2230;
+    padding: 24px 20px;
+    overflow-y: auto;
+  }
+  .edroot .picker h1 {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .edroot .picker .tagline { font-size: 12px; color: #858C9D; margin: 0 0 24px; }
+  .edroot .picker .group-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #5A6172;
+    margin: 18px 6px 8px;
+  }
+  .edroot .picker .tmpl-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: #D9DCE3;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    transition: all 120ms cubic-bezier(0.2,0.7,0.2,1);
+  }
+  .edroot .picker .tmpl-btn:hover { background: rgba(255,255,255,0.04); color: #fff; }
+  .edroot .picker .tmpl-btn.active {
+    background: rgba(57,71,168,0.18);
+    border-color: rgba(136,146,216,0.4);
+    color: #fff;
+  }
+  .edroot .picker .tmpl-btn .dot {
+    width: 8px; height: 8px; border-radius: 999px; flex-shrink: 0;
+  }
+
+  /* Center: canvas */
+  .edroot .stage {
+    background: #161A22;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .edroot .stage-meta {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid #1E2230;
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #B4BAC6;
+    letter-spacing: 0.04em;
+    z-index: 10;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .edroot .stage-meta .live-dot {
+    width: 6px; height: 6px; border-radius: 999px; background: #7DC79A;
+    box-shadow: 0 0 8px #7DC79A;
+  }
+  .edroot .artboard-wrap {
+    box-shadow: 0 30px 80px -20px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  /* Right: controls */
+  .edroot .controls {
+    background: #0A0C10;
+    border-left: 1px solid #1E2230;
+    padding: 24px 20px;
+    overflow-y: auto;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .edroot .controls h2 {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+    color: #fff;
+  }
+  .edroot .controls .sub { font-size: 12px; color: #858C9D; margin: -8px 0 4px; }
+  .edroot .ctrl-group { display: flex; flex-direction: column; gap: 8px; }
+  .edroot .ctrl-label {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #5A6172;
+  }
+  .edroot .ctrl input, .edroot .ctrl textarea, .edroot .ctrl select {
+    width: 100%;
+    padding: 10px 12px;
+    background: #161A22;
+    border: 1px solid #1E2230;
+    border-radius: 8px;
+    color: #F3F4F7;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    transition: border-color 120ms;
+    box-sizing: border-box;
+  }
+  .edroot .ctrl input:focus, .edroot .ctrl textarea:focus, .edroot .ctrl select:focus {
+    outline: none;
+    border-color: #5866C2;
+    box-shadow: 0 0 0 3px rgba(57,71,168,0.3);
+  }
+  .edroot .ctrl textarea { resize: vertical; min-height: 64px; font-family: inherit; }
+
+  .edroot .swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .edroot .swatch {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 120ms;
+    position: relative;
+  }
+  .edroot .swatch.active { border-color: #fff; }
+  .edroot .swatch:hover { transform: scale(1.05); }
+
+  .edroot .export-btn {
+    width: 100%;
+    padding: 14px 16px;
+    background: #fff;
+    color: #0A0C10;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: all 120ms cubic-bezier(0.2,0.7,0.2,1);
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .edroot .export-btn:hover { background: #B6BEEA; }
+  .edroot .export-btn:active { transform: translateY(1px); }
+  .edroot .export-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .edroot .kit-link {
+    display: flex; align-items: center; gap: 8px;
+    color: #858C9D;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 8px 0;
+    border-top: 1px solid #1E2230;
+    margin-top: 12px;
+  }
+  .edroot .kit-link:hover { color: #fff; }
+
+  /* Scaling for stage */
+  .edroot .scale-wrap { transform-origin: center; transition: transform 200ms cubic-bezier(0.2,0.7,0.2,1); }
+
+/* ── Additions: lane / accent switching, repeating rows, ZIP export ────────
+   Same tokens and rhythm as the original controls above. */
+
+  .edroot .ctrl-divider {
+    height: 1px; background: #1E2230; margin: 4px 0;
+  }
+
+  .edroot .seg {
+    display: flex; flex-wrap: wrap; gap: 4px;
+  }
+  .edroot .seg button {
+    flex: 1 1 auto; padding: 7px 10px;
+    background: #161A22; border: 1px solid #1E2230; border-radius: 7px;
+    color: #B4BAC6; font-family: inherit; font-size: 12px; font-weight: 500;
+    cursor: pointer; transition: all 120ms cubic-bezier(0.2,0.7,0.2,1);
+  }
+  .edroot .seg button:hover { color: #fff; border-color: #2A2F3D; }
+  .edroot .seg button.on {
+    background: rgba(57,71,168,0.22); border-color: rgba(136,146,216,0.5); color: #fff;
+  }
+
+  .edroot .swatches { grid-template-columns: repeat(5, 1fr); }
+  .edroot .swatch { border: 2px solid #1E2230; }
+  .edroot .swatch.active { border-color: #fff; }
+
+  .edroot .rows-field { display: flex; flex-direction: column; gap: 6px; }
+  .edroot .rows-row { display: flex; gap: 4px; align-items: center; }
+  .edroot .rows-row input {
+    flex: 1 1 auto; min-width: 0; padding: 7px 8px;
+    background: #161A22; border: 1px solid #1E2230; border-radius: 6px;
+    color: #F3F4F7; font-family: 'Inter', sans-serif; font-size: 12px;
+    box-sizing: border-box;
+  }
+  .edroot .rows-row input:focus {
+    outline: none; border-color: #5866C2; box-shadow: 0 0 0 2px rgba(57,71,168,0.3);
+  }
+  .edroot .rows-del {
+    flex: 0 0 22px; height: 26px; padding: 0;
+    background: transparent; border: 1px solid #1E2230; border-radius: 6px;
+    color: #5A6172; font-size: 14px; line-height: 1; cursor: pointer;
+  }
+  .edroot .rows-del:hover { color: #E5484D; border-color: rgba(229,72,77,0.5); }
+  .edroot .rows-add {
+    align-self: flex-start; padding: 6px 10px;
+    background: transparent; border: 1px dashed #2A2F3D; border-radius: 6px;
+    color: #858C9D; font-family: inherit; font-size: 12px; cursor: pointer;
+  }
+  .edroot .rows-add:hover { color: #fff; border-color: #5866C2; }
+
+  .edroot .reset-btn {
+    width: 100%; padding: 9px 12px;
+    background: transparent; border: 1px solid #1E2230; border-radius: 8px;
+    color: #858C9D; font-family: inherit; font-size: 12px; cursor: pointer;
+    transition: all 120ms;
+  }
+  .edroot .reset-btn:hover { color: #fff; border-color: #2A2F3D; }
+
+  .edroot .zip-btn {
+    width: 100%; padding: 12px 16px;
+    background: rgba(57,71,168,0.22); color: #D9DDF4;
+    border: 1px solid rgba(136,146,216,0.4); border-radius: 10px;
+    font-family: 'Inter Tight', sans-serif; font-weight: 600; font-size: 13px;
+    cursor: pointer; transition: all 120ms cubic-bezier(0.2,0.7,0.2,1);
+  }
+  .edroot .zip-btn:hover:not(:disabled) { background: rgba(57,71,168,0.35); color: #fff; }
+  .edroot .zip-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .edroot .zip-progress { display: flex; flex-direction: column; gap: 6px; }
+  .edroot .zip-bar {
+    height: 4px; border-radius: 999px; background: #1E2230; overflow: hidden;
+  }
+  .edroot .zip-bar span {
+    display: block; height: 100%; background: #5866C2;
+    transition: width 180ms cubic-bezier(0.2,0.7,0.2,1);
+  }
+  .edroot .zip-label {
+    font-size: 11px; color: #5A6172; font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  /* Off-screen host for the batch export. Positioned out of view rather than
+     hidden, because html-to-image cannot measure a display:none subtree. */
+  .edroot .batch-host {
+    position: fixed; left: -20000px; top: 0; width: 0; height: 0; overflow: visible;
+    pointer-events: none;
+  }

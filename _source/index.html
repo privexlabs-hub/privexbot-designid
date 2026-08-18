@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>PrivexBot — Social Brand Kit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="brand.css" />
+<style>
+  html, body { margin: 0; height: 100%; background: #F3F4F7; }
+  body { font-family: 'Inter', system-ui, sans-serif; color: #0F1218; }
+  #root { min-height: 100vh; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="vendor/react.development.js"></script>
+<script src="vendor/react-dom.development.js"></script>
+<script src="vendor/babel.min.js"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="components/brand.jsx"></script>
+<script type="text/babel" src="components/foundation.jsx"></script>
+<script type="text/babel" src="components/avatars-covers.jsx"></script>
+<script type="text/babel" src="components/posts.jsx"></script>
+<script type="text/babel" src="components/stories-thumbs.jsx"></script>
+<script type="text/babel" src="components/profile-setups.jsx"></script>
+<script type="text/babel" src="components/engagement-posts.jsx"></script>
+
+<script type="text/babel">
+const { DesignCanvas, DCSection, DCArtboard } = window;
+
+function KitIntro() {
+  return (
+    <Frame lane="lane-mono" width={1200} height={680}>
+      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 75% 25%, rgba(57,71,168,0.08), transparent 60%)' }} />
+      <div style={{ position: 'relative', height: '100%', padding: 64, display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 56 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
+              <Icon color="indigo" size={44} />
+              <span style={{ fontFamily: 'Inter Tight', fontWeight: 800, fontSize: 24, letterSpacing: '0.08em', color: COLORS.signal500 }}>PRIVEXBOT</span>
+            </div>
+            <div className="eyebrow" style={{ fontSize: 12 }}>Social brand kit · v1</div>
+            <h2 className="display" style={{ fontSize: 52, marginTop: 16, lineHeight: 1.0, letterSpacing: '-0.02em' }}>
+              One mark. Five colorways.<br/>Every platform.
+            </h2>
+            <p style={{ color: COLORS.ink500, fontSize: 16, marginTop: 18, maxWidth: 580, lineHeight: 1.55 }}>
+              Profile avatars, cover banners, ten square-feed post templates across four visual lanes, five vertical formats, and three YouTube thumbnails — all tied to the PrivexBot design system.
+            </p>
+          </div>
+
+          <div style={{ display: 'flex', gap: 12 }}>
+            <a href="editor.html" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '14px 22px', borderRadius: 10, background: COLORS.ink950, color: '#fff', fontSize: 15, fontWeight: 600, textDecoration: 'none', border: 'none' }}>
+              Open post editor
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+            </a>
+            <a href="playbook.html" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '14px 22px', borderRadius: 10, background: 'transparent', color: COLORS.signal500, fontSize: 15, fontWeight: 600, textDecoration: 'none', border: `1px solid ${COLORS.signal500}` }}>
+              Read the playbook →
+            </a>
+          </div>
+        </div>
+        <div style={{ display: 'grid', gridTemplateRows: '1fr 1fr', gap: 16 }}>
+          <div style={{ borderRadius: 14, background: COLORS.ink950, position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 50%, rgba(88,102,194,0.4), transparent 65%)' }} />
+            <Icon color="white" size={160} style={{ position: 'relative' }} />
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+            <div style={{ borderRadius: 12, background: COLORS.signal500, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon color="white" size={70} /></div>
+            <div style={{ borderRadius: 12, background: COLORS.signal50, display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${COLORS.ink100}` }}><Icon color="indigo" size={70} /></div>
+            <div style={{ borderRadius: 12, background: COLORS.ink0, display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${COLORS.ink100}` }}><Icon color="black" size={70} /></div>
+          </div>
+        </div>
+      </div>
+    </Frame>
+  );
+}
+
+function App() {
+  return (
+    <DesignCanvas>
+      {/* ============ INTRO / NAV ============ */}
+      <DCSection id="intro" title="Welcome to the kit" subtitle="A complete social brand reference for PrivexBot. Drag artboards to reorder. Double-click any artboard to open it full-screen. Right-click to export PNG/HTML.">
+        <DCArtboard id="kit-intro" label="Read me first" width={1200} height={680}>
+          <KitIntro />
+        </DCArtboard>
+      </DCSection>
+
+      {/* ============ FOUNDATIONS ============ */}
+      <DCSection id="foundation" title="Foundations" subtitle="The shared rules every post inherits.">
+        <DCArtboard id="logos" label="Logo system" width={1200} height={680}>
+          <LogoShowcase />
+        </DCArtboard>
+        <DCArtboard id="colors" label="Color palette" width={1200} height={680}>
+          <ColorPalette />
+        </DCArtboard>
+        <DCArtboard id="type" label="Typography" width={1200} height={680}>
+          <TypeSpecimen />
+        </DCArtboard>
+        <DCArtboard id="voice" label="Voice — do / don't" width={1200} height={680}>
+          <VoiceGuide />
+        </DCArtboard>
+      </DCSection>
+
+      {/* ============ AVATARS ============ */}
+      <DCSection id="avatars" title="Profile avatars" subtitle="One mark. Four backgrounds. Same identity everywhere.">
+        <DCArtboard id="avatar-gallery" label="Avatar overview — circle + square crops" width={1200} height={680}>
+          <AvatarGallery />
+        </DCArtboard>
+        <DCArtboard id="av-indigo" label="Indigo · default · 400×400" width={400} height={400}>
+          <AvatarArtboard variant="indigo" />
+        </DCArtboard>
+        <DCArtboard id="av-ink" label="Ink · stealth · 400×400" width={400} height={400}>
+          <AvatarArtboard variant="ink" />
+        </DCArtboard>
+        <DCArtboard id="av-white" label="White · light · 400×400" width={400} height={400}>
+          <AvatarArtboard variant="white" />
+        </DCArtboard>
+        <DCArtboard id="av-radial" label="Radial · campaign · 400×400" width={400} height={400}>
+          <AvatarArtboard variant="radial" />
+        </DCArtboard>
+      </DCSection>
+
+      {/* ============ COVERS & BANNERS ============ */}
+      <DCSection id="covers" title="Cover banners" subtitle="Hero surfaces, sized exactly per platform.">
+        <DCArtboard id="x-header" label="X / Twitter header · 1500×500" width={1500} height={500}>
+          <XHeader />
+        </DCArtboard>
+        <DCArtboard id="linkedin-cover" label="LinkedIn personal cover · 1584×396" width={1584} height={396}>
+          <LinkedInCover />
+        </DCArtboard>
+        <DCArtboard id="twitch-banner" label="Twitch banner · 1200×480" width={1200} height={480}>
+          <TwitchBanner />
+        </DCArtboard>
+        <DCArtboard id="fb-cover" label="Facebook cover · 1640×856" width={1640} height={856}>
+          <FacebookCover />
+        </DCArtboard>
+        <DCArtboard id="yt-banner" label="YouTube channel art · 2560×1440 (safe area centered)" width={2560} height={1440}>
+          <YouTubeBanner />
+        </DCArtboard>
+      </DCSection>
+
+      {/* ============ SQUARE FEED POSTS ============ */}
+      <DCSection id="square" title="Square feed posts · 1080×1080" subtitle="Instagram / X / LinkedIn / Facebook. Ten templates across four visual lanes.">
+        <DCArtboard id="sq-privacy" label="Privacy / TEE explainer · Dark lane" width={1080} height={1080}>
+          <PrivacyPost />
+        </DCArtboard>
+        <DCArtboard id="sq-feature" label="Feature announcement · Mono lane" width={1080} height={1080}>
+          <FeaturePost />
+        </DCArtboard>
+        <DCArtboard id="sq-quote" label="Customer quote · Editorial lane" width={1080} height={1080}>
+          <QuotePost />
+        </DCArtboard>
+        <DCArtboard id="sq-stat" label="Big stat · Light lane" width={1080} height={1080}>
+          <StatPost />
+        </DCArtboard>
+        <DCArtboard id="sq-tip" label="Tutorial / tip · Mono lane" width={1080} height={1080}>
+          <TipPost />
+        </DCArtboard>
+        <DCArtboard id="sq-launch" label="Launch / milestone · Dark lane" width={1080} height={1080}>
+          <LaunchPost />
+        </DCArtboard>
+        <DCArtboard id="sq-build" label="Build-in-public · Light lane" width={1080} height={1080}>
+          <BuildPost />
+        </DCArtboard>
+        <DCArtboard id="sq-hottake" label="Industry hot take · Editorial lane" width={1080} height={1080}>
+          <HotTakePost />
+        </DCArtboard>
+        <DCArtboard id="sq-meme" label="Lighthearted · Mono lane" width={1080} height={1080}>
+          <MemePost />
+        </DCArtboard>
+        <DCArtboard id="sq-blog" label="Blog promo · Dark lane" width={1080} height={1080}>
+          <BlogPromoPost />
+        </DCArtboard>
+      </DCSection>
+
+      {/* ============ VERTICAL (STORIES / REELS / SHORTS) ============ */}
+      <DCSection id="vertical" title="Stories · Reels · Shorts · TikTok · 1080×1920" subtitle="Vertical formats for ephemeral and short-form video covers.">
+        <DCArtboard id="st-privacy" label="Privacy headline · Dark" width={1080} height={1920}>
+          <StoryPrivacy />
+        </DCArtboard>
+        <DCArtboard id="st-stat" label="Big stat · Light" width={1080} height={1920}>
+          <StoryStat />
+        </DCArtboard>
+        <DCArtboard id="st-launch" label="Launch · Dark" width={1080} height={1920}>
+          <StoryLaunch />
+        </DCArtboard>
+        <DCArtboard id="st-quote" label="Customer quote · Editorial" width={1080} height={1920}>
+          <StoryQuote />
+        </DCArtboard>
+        <DCArtboard id="st-tutorial" label="Tutorial step · Mono" width={1080} height={1920}>
+          <StoryTutorial />
+        </DCArtboard>
+      </DCSection>
+
+      {/* ============ PROFILE SETUPS ON EACH PLATFORM ============ */}
+      <DCSection id="profiles" title="Profile setups · in-platform" subtitle="What your profile looks like on each social. Pair with the avatars + bios in the foundations section.">
+        <DCArtboard id="bios" label="Bios · copy-paste per platform" width={1200} height={840}>
+          <BioReference />
+        </DCArtboard>
+        <DCArtboard id="prof-x" label="X / Twitter profile" width={1200} height={780}>
+          <XProfile />
+        </DCArtboard>
+        <DCArtboard id="prof-li" label="LinkedIn company page" width={1200} height={780}>
+          <LinkedInProfile />
+        </DCArtboard>
+        <DCArtboard id="prof-ig" label="Instagram profile" width={1200} height={780}>
+          <InstagramProfile />
+        </DCArtboard>
+        <DCArtboard id="prof-yt" label="YouTube channel" width={1200} height={780}>
+          <YouTubeProfile />
+        </DCArtboard>
+        <DCArtboard id="prof-tt" label="TikTok profile" width={1200} height={780}>
+          <TikTokProfile />
+        </DCArtboard>
+        <DCArtboard id="prof-tw" label="Twitch channel" width={1200} height={780}>
+          <TwitchProfile />
+        </DCArtboard>
+        <DCArtboard id="prof-fb" label="Facebook page" width={1200} height={780}>
+          <FacebookProfile />
+        </DCArtboard>
+      </DCSection>
+
+      {/* ============ ENGAGEMENT POSTS — WHY / STORY / MISSION ============ */}
+      <DCSection id="engagement" title="Engagement posts · why we care" subtitle="Mission-driven content built to start conversations, not just scroll past.">
+        <DCArtboard id="eng-why" label="Why we built PrivexBot · founder story" width={1080} height={1080}>
+          <WhyBuiltPost />
+        </DCArtboard>
+        <DCArtboard id="eng-manifesto" label="Manifesto · what we believe" width={1080} height={1080}>
+          <ManifestoPost />
+        </DCArtboard>
+        <DCArtboard id="eng-problem" label="Problem / solution split" width={1080} height={1080}>
+          <ProblemSolutionPost />
+        </DCArtboard>
+        <DCArtboard id="eng-faq" label="Did you know · educational" width={1080} height={1080}>
+          <FAQPost />
+        </DCArtboard>
+        <DCArtboard id="eng-compare" label="Comparison · vs alternatives" width={1080} height={1080}>
+          <ComparisonPost />
+        </DCArtboard>
+        <DCArtboard id="eng-usecase" label="Use case · healthcare" width={1080} height={1080}>
+          <UseCasePost />
+        </DCArtboard>
+        <DCArtboard id="eng-receipt" label="Attestation receipt · proof" width={1080} height={1080}>
+          <ReceiptPost />
+        </DCArtboard>
+        <DCArtboard id="eng-community" label="Community spotlight" width={1080} height={1080}>
+          <CommunityPost />
+        </DCArtboard>
+        <DCArtboard id="eng-cta" label="Sign-up CTA" width={1080} height={1080}>
+          <CTAPost />
+        </DCArtboard>
+      </DCSection>
+
+      {/* ============ CAROUSEL — 3 of 5 slides as a sequence ============ */}
+      <DCSection id="carousel" title="Carousel · LinkedIn / Instagram" subtitle="Three slides from a five-slide swipe-through. Pattern: hook → reasons → CTA close.">
+        <DCArtboard id="car-1" label="Slide 1/5 · Hook" width={1080} height={1080}>
+          <CarouselSlide1 />
+        </DCArtboard>
+        <DCArtboard id="car-2" label="Slide 2/5 · First reason" width={1080} height={1080}>
+          <CarouselSlide2 />
+        </DCArtboard>
+        <DCArtboard id="car-5" label="Slide 5/5 · CTA close" width={1080} height={1080}>
+          <CarouselSlide5 />
+        </DCArtboard>
+      </DCSection>
+
+      {/* ============ YOUTUBE THUMBNAILS ============ */}
+      <DCSection id="thumbnails" title="YouTube thumbnails · 1280×720" subtitle="Legible at small sizes. Big type, brand corner, one accent.">
+        <DCArtboard id="th-tutorial" label="Tutorial thumbnail" width={1280} height={720}>
+          <ThumbnailTutorial />
+        </DCArtboard>
+        <DCArtboard id="th-hottake" label="Podcast / hot take thumbnail" width={1280} height={720}>
+          <ThumbnailHotTake />
+        </DCArtboard>
+        <DCArtboard id="th-launch" label="Launch thumbnail" width={1280} height={720}>
+          <ThumbnailLaunch />
+        </DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

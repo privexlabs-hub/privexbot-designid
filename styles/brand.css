@@ -1,0 +1,200 @@
+/* PrivexBot — Social Brand Kit
+   The Google Fonts @import moved to a <link> in app/layout.jsx (same three
+   families, loaded once, without @import's render-blocking request chain).
+   next/font is deliberately NOT used: ~40 components hardcode the literal
+   family names 'Inter Tight' / 'JetBrains Mono' inline, and next/font emits
+   generated family names that would not match them.
+   Pulls in the design system tokens (which actually use indigo, not teal —
+   the README is mistaken; colors_and_type.css is source of truth).
+============================================================ */
+
+
+:root {
+  /* Ink */
+  --ink-950: #0A0C10;
+  --ink-900: #0F1218;
+  --ink-800: #161A22;
+  --ink-700: #1E2230;
+  --ink-600: #2A2F3D;
+  --ink-500: #3A4051;
+  --ink-400: #5A6172;
+  --ink-300: #858C9D;
+  --ink-200: #B4BAC6;
+  --ink-100: #D9DCE3;
+  --ink-75:  #E9EBEF;
+  --ink-50:  #F3F4F7;
+  --ink-25:  #F9FAFB;
+  --ink-0:   #FFFFFF;
+
+  /* Brand — compliance indigo */
+  --signal-50:  #EEF0FB;
+  --signal-100: #D9DDF4;
+  --signal-200: #B6BEEA;
+  --signal-300: #8892D8;
+  --signal-400: #5866C2;
+  --signal-500: #3947A8;
+  --signal-600: #2B368A;
+  --signal-700: #212B6F;
+  --signal-800: #1A2256;
+  --signal-900: #131941;
+
+  --attest-100: #DCEBE1;
+  --attest-500: #3E8A5E;
+  --attest-700: #285A3D;
+
+  --danger-100: #FEE2E2;
+  --danger-500: #E5484D;
+  --danger-700: #AA2328;
+  --warn-100: #FFF3CD;
+  --warn-500: #D97706;
+  --warn-700: #92400E;
+
+  /* Type */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Inter Tight', 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Radii */
+  --r-4: 4px; --r-6: 6px; --r-8: 8px; --r-10: 10px; --r-12: 12px; --r-16: 16px; --r-20: 20px; --r-full: 999px;
+
+  /* Easing */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* ------ Reset for templates ------ */
+.tmpl, .tmpl * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+.tmpl {
+  font-family: var(--font-sans);
+  color: var(--ink-900);
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
+  position: relative;
+  overflow: hidden;
+}
+.tmpl button { all: unset; cursor: pointer; }
+
+/* ------ Visual lanes ------
+   .lane-mono     — strict design-system minimal: white, indigo accent, lots of whitespace
+   .lane-dark     — devtool: ink-950, white text, indigo + sage highlights
+   .lane-light    — SaaS-friendly: light surfaces, indigo, occasional sage
+   .lane-editorial — big display type, dot grid, brand mark featured
+*/
+
+.lane-mono { background: var(--ink-0); color: var(--ink-900); }
+.lane-dark { background: var(--ink-950); color: var(--ink-50); }
+.lane-light { background: var(--signal-50); color: var(--ink-900); }
+.lane-editorial { background: var(--ink-25); color: var(--ink-900); }
+
+/* Dot grid texture — the one permitted texture from the system */
+.tx-dotgrid {
+  background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: 0 0;
+  opacity: 0.06;
+}
+.tx-dotgrid-tight {
+  background-image: radial-gradient(circle, currentColor 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+/* Subtle hero radial — landing page exception, only on editorial / dark covers */
+.tx-radial-indigo {
+  background: radial-gradient(ellipse at 30% 20%, rgba(57, 71, 168, 0.18), transparent 60%),
+              radial-gradient(ellipse at 70% 90%, rgba(57, 71, 168, 0.10), transparent 50%);
+}
+.tx-radial-indigo-dark {
+  background: radial-gradient(ellipse at 30% 20%, rgba(88, 102, 194, 0.32), transparent 60%),
+              radial-gradient(ellipse at 70% 90%, rgba(57, 71, 168, 0.18), transparent 50%);
+}
+
+/* ------ Common helpers ------ */
+.eyebrow {
+  font-size: 0.72em;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-500);
+}
+.lane-dark .eyebrow { color: var(--signal-300); }
+.lane-light .eyebrow { color: var(--signal-700); }
+
+.mono { font-family: var(--font-mono); letter-spacing: 0; }
+.display { font-family: var(--font-display); letter-spacing: -0.025em; line-height: 1.05; font-weight: 700; }
+
+/* Pill / tag */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.4em 0.85em;
+  border-radius: var(--r-full);
+  font-size: 0.78em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: var(--signal-100);
+  color: var(--signal-700);
+  border: 1px solid var(--signal-200);
+  white-space: nowrap;
+}
+.pill-dark {
+  background: rgba(88, 102, 194, 0.14);
+  color: var(--signal-300);
+  border-color: rgba(88, 102, 194, 0.28);
+}
+.pill-mono {
+  background: var(--ink-50);
+  color: var(--ink-700);
+  border-color: var(--ink-100);
+}
+.pill-attest {
+  background: var(--attest-100);
+  color: var(--attest-700);
+  border-color: rgba(62, 138, 94, 0.3);
+}
+.pill-attest-dark {
+  background: rgba(62, 138, 94, 0.18);
+  color: #7DC79A;
+  border-color: rgba(62, 138, 94, 0.4);
+}
+
+/* Dot status indicator */
+.dot { width: 0.55em; height: 0.55em; border-radius: var(--r-full); display: inline-block; }
+.dot-attest { background: var(--attest-500); }
+.dot-attest-dark { background: #7DC79A; }
+.dot-signal { background: var(--signal-500); }
+
+/* Wordmark text fallback */
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+/* Disable text wrapping shifts */
+.nowrap { white-space: nowrap; }
+.balance { text-wrap: balance; }
+.pretty { text-wrap: pretty; }
+
+/* Crop helpers for avatar previews */
+.crop-circle { border-radius: 50%; overflow: hidden; }
+.crop-square { border-radius: var(--r-16); overflow: hidden; }
+
+/* Sage accent (used sparingly — "verified / encrypted / running" state) */
+.sage { color: var(--attest-500); }
+.lane-dark .sage { color: #7DC79A; }
+
+/* Indigo accent */
+.indigo { color: var(--signal-500); }
+.lane-dark .indigo { color: var(--signal-300); }
+
+/* Generic safe-area marker for cover banners (overlay only — visual guide for export) */
+.safe-area-hint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 2px dashed rgba(57, 71, 168, 0.0);
+}
