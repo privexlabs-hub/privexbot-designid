@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "tokens": "node scripts/build-tokens.mjs",
+    "prebuild": "npm run tokens",
+    "dev": "npm run tokens && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

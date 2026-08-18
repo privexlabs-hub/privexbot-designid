@@ -1,0 +1,133 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "$description": "PrivexBot brand tokens. Single source of truth — styles/tokens.generated.css, components/tokens.generated.js and public/tokens.json are all generated from this file by scripts/build-tokens.mjs. Edit here, never there.",
+  "color": {
+    "ink": {
+      "$type": "color",
+      "$description": "Neutral ramp — cool, slightly blue-shifted greys.",
+      "0": {
+        "$value": "#FFFFFF"
+      },
+      "25": {
+        "$value": "#F9FAFB"
+      },
+      "50": {
+        "$value": "#F3F4F7"
+      },
+      "75": {
+        "$value": "#E9EBEF"
+      },
+      "100": {
+        "$value": "#D9DCE3"
+      },
+      "200": {
+        "$value": "#B4BAC6"
+      },
+      "300": {
+        "$value": "#858C9D"
+      },
+      "400": {
+        "$value": "#5A6172"
+      },
+      "500": {
+        "$value": "#3A4051"
+      },
+      "600": {
+        "$value": "#2A2F3D"
+      },
+      "700": {
+        "$value": "#1E2230"
+      },
+      "800": {
+        "$value": "#161A22"
+      },
+      "900": {
+        "$value": "#0F1218"
+      },
+      "950": {
+        "$value": "#0A0C10"
+      }
+    },
+    "signal": {
+      "$type": "color",
+      "$description": "Brand indigo. The trust anchor and the only colour used to draw the eye.",
+      "50": {
+        "$value": "#EEF0FB"
+      },
+      "100": {
+        "$value": "#D9DDF4"
+      },
+      "200": {
+        "$value": "#B6BEEA"
+      },
+      "300": {
+        "$value": "#8892D8"
+      },
+      "400": {
+        "$value": "#5866C2"
+      },
+      "500": {
+        "$value": "#3947A8"
+      },
+      "600": {
+        "$value": "#2B368A"
+      },
+      "700": {
+        "$value": "#212B6F"
+      },
+      "800": {
+        "$value": "#1A2256"
+      },
+      "900": {
+        "$value": "#131941"
+      }
+    },
+    "attest": {
+      "$type": "color",
+      "$description": "Sage. Reserved for verified / encrypted state. Never decorative.",
+      "100": {
+        "$value": "#DCEBE1"
+      },
+      "300": {
+        "$value": "#7DC79A",
+        "$description": "Was COLORS.attestLight, JS-only. Same value, now named on the attest ramp."
+      },
+      "500": {
+        "$value": "#3E8A5E"
+      },
+      "700": {
+        "$value": "#285A3D"
+      }
+    },
+    "danger": {
+      "$type": "color",
+      "$description": "Error and destructive state.",
+      "100": {
+        "$value": "#FEE2E2"
+      },
+      "300": {
+        "$value": "#FF7B7E",
+        "$description": "Was a bare #FF7B7E literal in avatars-covers.jsx and engagement-posts.jsx (4 uses) with no token anywhere. Value preserved exactly; the NAME is the only new thing and needs brand-owner confirmation."
+      },
+      "500": {
+        "$value": "#E5484D"
+      },
+      "700": {
+        "$value": "#AA2328"
+      }
+    },
+    "warn": {
+      "$type": "color",
+      "$description": "Warning state.",
+      "100": {
+        "$value": "#FFF3CD"
+      },
+      "500": {
+        "$value": "#D97706"
+      },
+      "700": {
+        "$value": "#92400E"
+      }
+    }
+  }
+}

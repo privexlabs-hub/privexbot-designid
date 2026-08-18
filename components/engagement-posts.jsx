@@ -120,7 +120,7 @@ export function ProblemSolutionPost({
         <div style={{ display: 'grid', gridTemplateRows: '1fr 1fr', gap: 28, flex: 1 }}>
           {/* Problem */}
           <div style={{ background: COLORS.ink25, borderRadius: 16, padding: 36, border: `1px solid ${COLORS.ink100}`, position: 'relative' }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '6px 14px', borderRadius: 999, background: COLORS.danger + '20', color: '#AA2328', fontSize: 13, fontWeight: 700, letterSpacing: '0.04em', fontFamily: 'JetBrains Mono', textTransform: 'uppercase', marginBottom: 14 }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '6px 14px', borderRadius: 999, background: COLORS.danger + '20', color: COLORS.danger700, fontSize: 13, fontWeight: 700, letterSpacing: '0.04em', fontFamily: 'JetBrains Mono', textTransform: 'uppercase', marginBottom: 14 }}>
               <span style={{ width: 8, height: 8, borderRadius: 999, background: COLORS.danger }} /> Today
             </div>
             <div className="display" style={{ fontSize: 40, color: COLORS.ink900, lineHeight: 1.1, fontWeight: 700, letterSpacing: '-0.02em', marginBottom: 14 }}>
@@ -133,7 +133,7 @@ export function ProblemSolutionPost({
           {/* Solution */}
           <div style={{ background: COLORS.signal500, borderRadius: 16, padding: 36, position: 'relative', color: '#fff' }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '6px 14px', borderRadius: 999, background: 'rgba(255,255,255,0.18)', color: '#fff', fontSize: 13, fontWeight: 700, letterSpacing: '0.04em', fontFamily: 'JetBrains Mono', textTransform: 'uppercase', marginBottom: 14 }}>
-              <span style={{ width: 8, height: 8, borderRadius: 999, background: '#7DC79A' }} /> With PrivexBot
+              <span style={{ width: 8, height: 8, borderRadius: 999, background: COLORS.attest300 }} /> With PrivexBot
             </div>
             <div className="display" style={{ fontSize: 40, lineHeight: 1.1, fontWeight: 700, letterSpacing: '-0.02em', marginBottom: 14 }}>
               {solution}
@@ -192,7 +192,7 @@ export function FAQPost({
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '14px 22px', borderRadius: 12, background: COLORS.ink950, color: '#fff', fontSize: 20, fontWeight: 600 }}>
-              <span style={{ width: 8, height: 8, borderRadius: 999, background: '#7DC79A' }} />
+              <span style={{ width: 8, height: 8, borderRadius: 999, background: COLORS.attest300 }} />
               {footer}
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -406,8 +406,8 @@ export function ReceiptPost({
       <div style={{ position: 'relative', height: '100%', padding: 64, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', zIndex: 2 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ fontSize: 15, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 700, color: COLORS.signal300 }}>{eyebrow}</div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '8px 16px', borderRadius: 999, background: 'rgba(62,138,94,0.18)', border: '1px solid rgba(62,138,94,0.4)', color: '#7DC79A', fontSize: 13, fontWeight: 600, fontFamily: 'JetBrains Mono' }}>
-            <span style={{ width: 8, height: 8, borderRadius: 999, background: '#7DC79A' }} /> Verified
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '8px 16px', borderRadius: 999, background: 'rgba(62,138,94,0.18)', border: '1px solid rgba(62,138,94,0.4)', color: COLORS.attest300, fontSize: 13, fontWeight: 600, fontFamily: 'JetBrains Mono' }}>
+            <span style={{ width: 8, height: 8, borderRadius: 999, background: COLORS.attest300 }} /> Verified
           </div>
         </div>
 
@@ -423,9 +423,9 @@ export function ReceiptPost({
           </div>
           <div><span style={{ color: COLORS.ink400 }}>model:</span> <span style={{ color: '#fff' }}>llama-3-70b-instruct</span></div>
           <div><span style={{ color: COLORS.ink400 }}>enclave_id:</span> <span style={{ color: '#fff' }}>nvidia-h100-tee-a7f3..</span></div>
-          <div><span style={{ color: COLORS.ink400 }}>attestation:</span> <span style={{ color: '#7DC79A' }}>NVIDIA_VERIFIED</span></div>
-          <div><span style={{ color: COLORS.ink400 }}>prompt_logged:</span> <span style={{ color: '#FF7B7E' }}>false</span></div>
-          <div><span style={{ color: COLORS.ink400 }}>response_logged:</span> <span style={{ color: '#FF7B7E' }}>false</span></div>
+          <div><span style={{ color: COLORS.ink400 }}>attestation:</span> <span style={{ color: COLORS.attest300 }}>NVIDIA_VERIFIED</span></div>
+          <div><span style={{ color: COLORS.ink400 }}>prompt_logged:</span> <span style={{ color: COLORS.danger300 }}>false</span></div>
+          <div><span style={{ color: COLORS.ink400 }}>response_logged:</span> <span style={{ color: COLORS.danger300 }}>false</span></div>
           <div><span style={{ color: COLORS.ink400 }}>signed_by:</span> <span style={{ color: '#fff' }}>privex_signing_key_2026</span></div>
           <div style={{ marginTop: 8, color: COLORS.ink400 }}>signature: <span style={{ color: COLORS.signal300 }}>0x9f3a1c..b8e7</span></div>
         </div>
@@ -536,7 +536,7 @@ export function CarouselSlide5({
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {benefits.map((b, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                <Ico name="check" size={26} stroke={2.4} style={{ color: '#7DC79A' }} />
+                <Ico name="check" size={26} stroke={2.4} style={{ color: COLORS.attest300 }} />
                 <span style={{ fontSize: 24, color: '#fff', fontWeight: 500 }}>{b}</span>
               </div>
             ))}

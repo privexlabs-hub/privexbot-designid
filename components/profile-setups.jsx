@@ -27,16 +27,16 @@ export function XProfile() {
 
       {/* Banner (X header 1500×500 — rendered at 1200 wide so 1200×400) */}
       <div style={{ position: 'absolute', top: 53, left: 0, right: 0, height: 400, overflow: 'hidden' }}>
-        <div style={{ width: '100%', height: '100%', position: 'relative', background: '#0A0C10' }}>
+        <div style={{ width: '100%', height: '100%', position: 'relative', background: COLORS.ink950 }}>
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 25% 50%, rgba(88,102,194,0.32), transparent 55%), radial-gradient(ellipse at 80% 90%, rgba(62,138,94,0.18), transparent 60%)' }} />
           <DotGrid color="#fff" opacity={0.04} spacing={28} />
           <div style={{ position: 'relative', height: '100%', padding: '48px 72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ maxWidth: 720 }}>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 12px', borderRadius: 999, background: 'rgba(62,138,94,0.18)', border: '1px solid rgba(62,138,94,0.4)', color: '#7DC79A', fontSize: 11, fontWeight: 600, letterSpacing: '0.04em', marginBottom: 16, fontFamily: 'JetBrains Mono' }}>
-                <span style={{ width: 6, height: 6, borderRadius: 999, background: '#7DC79A' }} /> TEE-attested inference
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 12px', borderRadius: 999, background: 'rgba(62,138,94,0.18)', border: '1px solid rgba(62,138,94,0.4)', color: COLORS.attest300, fontSize: 11, fontWeight: 600, letterSpacing: '0.04em', marginBottom: 16, fontFamily: 'JetBrains Mono' }}>
+                <span style={{ width: 6, height: 6, borderRadius: 999, background: COLORS.attest300 }} /> TEE-attested inference
               </div>
               <div style={{ fontFamily: 'Inter Tight', fontSize: 52, color: '#fff', lineHeight: 1, letterSpacing: '-0.025em', fontWeight: 700 }}>
-                Build chatbots that<br/><span style={{ color: '#8892D8' }}>never see your data.</span>
+                Build chatbots that<br/><span style={{ color: COLORS.signal300 }}>never see your data.</span>
               </div>
             </div>
             <Icon color="white" size={210} style={{ opacity: 0.95 }} />
@@ -84,7 +84,7 @@ export function InstagramProfile() {
       <div style={{ height: 52, borderBottom: '1px solid #DBDBDB', display: 'flex', alignItems: 'center', padding: '0 28px', gap: 24 }}>
         <div style={{ fontFamily: 'Inter Tight', fontSize: 22, fontWeight: 700, fontStyle: 'italic', letterSpacing: '-0.02em' }}>Instagram</div>
         <div style={{ flex: 1, maxWidth: 280, height: 36, background: '#EFEFEF', borderRadius: 8, padding: '0 12px', display: 'flex', alignItems: 'center', color: '#8E8E8E', fontSize: 13 }}>🔍 Search</div>
-        <div style={{ marginLeft: 'auto', display: 'flex', gap: 22, color: '#0F1218' }}>
+        <div style={{ marginLeft: 'auto', display: 'flex', gap: 22, color: COLORS.ink900 }}>
           <Ico name="message" size={22} stroke={1.8} />
           <Ico name="zap" size={22} stroke={1.8} />
           <Ico name="users" size={22} stroke={1.8} />
@@ -252,7 +252,7 @@ export function YouTubeProfile() {
 
       {/* Banner — safe area cropped to channel page view */}
       <div style={{ padding: '24px 96px 0' }}>
-        <div style={{ borderRadius: 12, height: 200, overflow: 'hidden', position: 'relative', background: '#0A0C10' }}>
+        <div style={{ borderRadius: 12, height: 200, overflow: 'hidden', position: 'relative', background: COLORS.ink950 }}>
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 50%, rgba(88,102,194,0.35), transparent 50%)' }} />
           <DotGrid color="#fff" opacity={0.04} spacing={32} />
           <div style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 14 }}>
@@ -263,7 +263,7 @@ export function YouTubeProfile() {
             <div style={{ fontFamily: 'Inter Tight', fontSize: 28, fontWeight: 700, letterSpacing: '-0.02em' }}>The privacy-first AI channel.</div>
             <div style={{ display: 'flex', gap: 10 }}>
               {['Tutorials', 'Live builds', 'Privacy deep dives', 'Changelog'].map((t) => (
-                <div key={t} style={{ padding: '5px 12px', borderRadius: 999, border: '1px solid rgba(255,255,255,0.22)', color: '#B4BAC6', fontSize: 12, fontFamily: 'JetBrains Mono', fontWeight: 500 }}>{t}</div>
+                <div key={t} style={{ padding: '5px 12px', borderRadius: 999, border: '1px solid rgba(255,255,255,0.22)', color: COLORS.ink200, fontSize: 12, fontFamily: 'JetBrains Mono', fontWeight: 500 }}>{t}</div>
               ))}
             </div>
           </div>
@@ -385,18 +385,18 @@ export function TwitchProfile() {
       </div>
 
       {/* Banner */}
-      <div style={{ position: 'relative', height: 320, background: '#0A0C10', overflow: 'hidden' }}>
+      <div style={{ position: 'relative', height: 320, background: COLORS.ink950, overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(57,71,168,0.45) 0%, transparent 60%), radial-gradient(circle at 90% 100%, rgba(62,138,94,0.25), transparent 50%)' }} />
         <DotGrid color="#fff" opacity={0.05} spacing={26} />
         <div style={{ position: 'relative', height: '100%', padding: '40px 64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '5px 10px', borderRadius: 4, background: 'rgba(229,72,77,0.16)', border: '1px solid rgba(229,72,77,0.4)', color: '#FF7B7E', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', marginBottom: 14, textTransform: 'uppercase', fontFamily: 'JetBrains Mono' }}>
-              <span style={{ width: 6, height: 6, borderRadius: 999, background: '#FF7B7E' }} /> Live · Building in public
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '5px 10px', borderRadius: 4, background: 'rgba(229,72,77,0.16)', border: '1px solid rgba(229,72,77,0.4)', color: COLORS.danger300, fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', marginBottom: 14, textTransform: 'uppercase', fontFamily: 'JetBrains Mono' }}>
+              <span style={{ width: 6, height: 6, borderRadius: 999, background: COLORS.danger300 }} /> Live · Building in public
             </div>
             <div style={{ fontFamily: 'Inter Tight', fontSize: 44, color: '#fff', lineHeight: 1, letterSpacing: '-0.025em', fontWeight: 700 }}>
               Tuesdays at 14:00 UTC.
             </div>
-            <div style={{ fontSize: 16, color: '#B4BAC6', marginTop: 10, maxWidth: 480 }}>
+            <div style={{ fontSize: 16, color: COLORS.ink200, marginTop: 10, maxWidth: 480 }}>
               Live coding sessions, RAG deep dives, and chaotic deploys.
             </div>
           </div>

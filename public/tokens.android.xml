@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GENERATED FILE — DO NOT EDIT.
+   Source: tokens/brand.tokens.json
+   Regenerate: npm run tokens -->
+<resources>
+  <color name="ink_0">#FFFFFF</color>
+  <color name="ink_25">#F9FAFB</color>
+  <color name="ink_50">#F3F4F7</color>
+  <color name="ink_75">#E9EBEF</color>
+  <color name="ink_100">#D9DCE3</color>
+  <color name="ink_200">#B4BAC6</color>
+  <color name="ink_300">#858C9D</color>
+  <color name="ink_400">#5A6172</color>
+  <color name="ink_500">#3A4051</color>
+  <color name="ink_600">#2A2F3D</color>
+  <color name="ink_700">#1E2230</color>
+  <color name="ink_800">#161A22</color>
+  <color name="ink_900">#0F1218</color>
+  <color name="ink_950">#0A0C10</color>
+  <color name="signal_50">#EEF0FB</color>
+  <color name="signal_100">#D9DDF4</color>
+  <color name="signal_200">#B6BEEA</color>
+  <color name="signal_300">#8892D8</color>
+  <color name="signal_400">#5866C2</color>
+  <color name="signal_500">#3947A8</color>
+  <color name="signal_600">#2B368A</color>
+  <color name="signal_700">#212B6F</color>
+  <color name="signal_800">#1A2256</color>
+  <color name="signal_900">#131941</color>
+  <color name="attest_100">#DCEBE1</color>
+  <color name="attest_300">#7DC79A</color>
+  <color name="attest_500">#3E8A5E</color>
+  <color name="attest_700">#285A3D</color>
+  <color name="danger_100">#FEE2E2</color>
+  <color name="danger_300">#FF7B7E</color>
+  <color name="danger_500">#E5484D</color>
+  <color name="danger_700">#AA2328</color>
+  <color name="warn_100">#FFF3CD</color>
+  <color name="warn_500">#D97706</color>
+  <color name="warn_700">#92400E</color>
+</resources>

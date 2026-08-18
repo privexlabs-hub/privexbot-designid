@@ -20,8 +20,8 @@ export function StoryPrivacy({
       <div style={{ position: 'relative', height: '100%', padding: '160px 80px 140px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', zIndex: 2 }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30 }}>
           <Icon color="white" size={180} />
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, padding: '12px 24px', borderRadius: 999, background: 'rgba(62,138,94,0.18)', border: '1px solid rgba(62,138,94,0.4)', color: '#7DC79A', fontSize: 20, fontWeight: 600, fontFamily: 'JetBrains Mono' }}>
-            <span style={{ width: 10, height: 10, borderRadius: 999, background: '#7DC79A' }} /> {badge}
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, padding: '12px 24px', borderRadius: 999, background: 'rgba(62,138,94,0.18)', border: '1px solid rgba(62,138,94,0.4)', color: COLORS.attest300, fontSize: 20, fontWeight: 600, fontFamily: 'JetBrains Mono' }}>
+            <span style={{ width: 10, height: 10, borderRadius: 999, background: COLORS.attest300 }} /> {badge}
           </div>
         </div>
 
@@ -102,7 +102,7 @@ export function StoryLaunch({
       <div style={{ position: 'relative', height: '100%', padding: '140px 80px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', zIndex: 2 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '10px 18px', borderRadius: 999, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.18)', color: '#fff', fontSize: 18, fontWeight: 600, fontFamily: 'JetBrains Mono' }}>
-            <span style={{ width: 8, height: 8, borderRadius: 999, background: '#7DC79A', boxShadow: '0 0 16px #7DC79A' }} /> {badge}
+            <span style={{ width: 8, height: 8, borderRadius: 999, background: COLORS.attest300, boxShadow: `0 0 16px ${COLORS.attest300}` }} /> {badge}
           </div>
           <Icon color="white" size={56} />
         </div>
@@ -297,7 +297,7 @@ export function ThumbnailLaunch({
       <DotGrid color="#fff" opacity={0.05} spacing={24} />
       <div style={{ position: 'relative', height: '100%', padding: 56, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', zIndex: 2 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, padding: '10px 22px', borderRadius: 999, background: '#7DC79A', color: COLORS.ink950, fontSize: 22, fontWeight: 800, fontFamily: 'JetBrains Mono', letterSpacing: '0.06em' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, padding: '10px 22px', borderRadius: 999, background: COLORS.attest300, color: COLORS.ink950, fontSize: 22, fontWeight: 800, fontFamily: 'JetBrains Mono', letterSpacing: '0.06em' }}>
             <span style={{ width: 10, height: 10, borderRadius: 999, background: COLORS.ink950 }} /> {status}
           </div>
           <Icon color="white" size={60} />

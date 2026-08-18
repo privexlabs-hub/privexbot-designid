@@ -60,33 +60,33 @@ export function ColorPalette() {
       label: 'Brand · signal',
       note: 'Compliance indigo. The trust anchor.',
       colors: [
-        { name: 'signal-900', hex: '#131941' },
-        { name: 'signal-700', hex: '#212B6F' },
-        { name: 'signal-500', hex: '#3947A8', primary: true },
-        { name: 'signal-300', hex: '#8892D8' },
-        { name: 'signal-100', hex: '#D9DDF4' },
+        { name: 'signal-900', hex: COLORS.signal900 },
+        { name: 'signal-700', hex: COLORS.signal700 },
+        { name: 'signal-500', hex: COLORS.signal500, primary: true },
+        { name: 'signal-300', hex: COLORS.signal300 },
+        { name: 'signal-100', hex: COLORS.signal100 },
       ],
     },
     {
       label: 'Attest · sage',
       note: 'Reserved for verified / encrypted state. Never decorative.',
       colors: [
-        { name: 'attest-700', hex: '#285A3D' },
-        { name: 'attest-500', hex: '#3E8A5E' },
-        { name: 'attest-100', hex: '#DCEBE1' },
+        { name: 'attest-700', hex: COLORS.attest700 },
+        { name: 'attest-500', hex: COLORS.attest500 },
+        { name: 'attest-100', hex: COLORS.attest100 },
       ],
     },
     {
       label: 'Ink · neutrals',
       note: 'Cool, slightly blue-shifted grays.',
       colors: [
-        { name: 'ink-950', hex: '#0A0C10' },
-        { name: 'ink-700', hex: '#1E2230' },
-        { name: 'ink-500', hex: '#3A4051' },
-        { name: 'ink-300', hex: '#858C9D' },
-        { name: 'ink-100', hex: '#D9DCE3' },
-        { name: 'ink-25',  hex: '#F9FAFB' },
-        { name: 'ink-0',   hex: '#FFFFFF' },
+        { name: 'ink-950', hex: COLORS.ink950 },
+        { name: 'ink-700', hex: COLORS.ink700 },
+        { name: 'ink-500', hex: COLORS.ink500 },
+        { name: 'ink-300', hex: COLORS.ink300 },
+        { name: 'ink-100', hex: COLORS.ink100 },
+        { name: 'ink-25',  hex: COLORS.ink25 },
+        { name: 'ink-0',   hex: COLORS.ink0 },
       ],
     },
   ];
@@ -217,7 +217,7 @@ export function VoiceGuide() {
           <div style={{ border: `1px solid ${COLORS.danger}`, borderRadius: 12, padding: 28, background: COLORS.ink0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
               <span style={{ width: 8, height: 8, borderRadius: 999, background: COLORS.danger }} />
-              <div style={{ fontSize: 13, fontWeight: 600, color: '#AA2328', letterSpacing: '0.04em', textTransform: 'uppercase' }}>Don't</div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: COLORS.danger700, letterSpacing: '0.04em', textTransform: 'uppercase' }}>Don't</div>
             </div>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 14 }}>
               {donts.map((d, i) => (

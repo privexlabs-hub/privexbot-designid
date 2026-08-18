@@ -129,8 +129,8 @@ export function XHeader({
       <DotGrid color="#fff" opacity={0.04} spacing={28} />
       <div style={{ position: 'relative', height: '100%', padding: '60px 90px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', zIndex: 2 }}>
         <div style={{ maxWidth: 820 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 12px', borderRadius: 999, background: 'rgba(62,138,94,0.18)', border: '1px solid rgba(62,138,94,0.4)', color: '#7DC79A', fontSize: 12, fontWeight: 600, letterSpacing: '0.04em', marginBottom: 20 }}>
-            <span style={{ width: 6, height: 6, borderRadius: 999, background: '#7DC79A' }} /> {badge}
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 12px', borderRadius: 999, background: 'rgba(62,138,94,0.18)', border: '1px solid rgba(62,138,94,0.4)', color: COLORS.attest300, fontSize: 12, fontWeight: 600, letterSpacing: '0.04em', marginBottom: 20 }}>
+            <span style={{ width: 6, height: 6, borderRadius: 999, background: COLORS.attest300 }} /> {badge}
           </div>
           <div className="display" style={{ fontSize: 64, color: '#fff', lineHeight: 1, letterSpacing: '-0.025em', fontWeight: 700 }}>
             {line1}<br/><span style={{ color: COLORS.signal300 }}>{line2}</span>
@@ -181,14 +181,16 @@ export function LinkedInCover({
   );
 }
 
-// YouTube banner — 2560×1440, safe area centered ~1546×423
+// YouTube banner — 2560×1440.
+// Safe area is 1235×338, per YouTube Help 10456525 (verified 2026-08-18).
+// The old 1546×423 figure is the pre-2020 "Channel Art" spec — do not restore it.
 export function YouTubeBanner() {
   return (
     <Frame lane="lane-dark" width={2560} height={1440} style={{ background: COLORS.ink950 }}>
       <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 50%, rgba(88,102,194,0.35), transparent 50%), radial-gradient(ellipse at 50% 90%, rgba(62,138,94,0.12), transparent 50%)' }} />
       <DotGrid color="#fff" opacity={0.04} spacing={40} />
       {/* Safe area — visible across all devices, centered */}
-      <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', width: 1546, height: 423, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 20, zIndex: 2 }}>
+      <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', width: 1235, height: 338, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 20, zIndex: 2 }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 14 }}>
           <Icon color="white" size={120} />
           <span style={{ fontFamily: 'Inter Tight', fontWeight: 800, fontSize: 74, letterSpacing: '0.06em', color: '#fff' }}>PRIVEXBOT</span>
@@ -245,8 +247,8 @@ export function TwitchBanner({
       <DotGrid color="#fff" opacity={0.05} spacing={26} />
       <div style={{ position: 'relative', height: '100%', padding: '56px 72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', zIndex: 2 }}>
         <div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 12px', borderRadius: 6, background: 'rgba(229,72,77,0.16)', border: '1px solid rgba(229,72,77,0.4)', color: '#FF7B7E', fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', marginBottom: 18, textTransform: 'uppercase', fontFamily: 'JetBrains Mono' }}>
-            <span style={{ width: 6, height: 6, borderRadius: 999, background: '#FF7B7E' }} /> {badge}
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 12px', borderRadius: 6, background: 'rgba(229,72,77,0.16)', border: '1px solid rgba(229,72,77,0.4)', color: COLORS.danger300, fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', marginBottom: 18, textTransform: 'uppercase', fontFamily: 'JetBrains Mono' }}>
+            <span style={{ width: 6, height: 6, borderRadius: 999, background: COLORS.danger300 }} /> {badge}
           </div>
           <div className="display" style={{ fontSize: 58, color: '#fff', lineHeight: 1, letterSpacing: '-0.025em' }}>
             {title}

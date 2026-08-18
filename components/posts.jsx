@@ -51,8 +51,8 @@ export function PrivacyPost({
       <DotGrid color="#fff" opacity={0.05} spacing={28} />
       <div style={{ position: 'relative', height: '100%', padding: 64, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', zIndex: 2 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '8px 16px', borderRadius: 999, background: 'rgba(62,138,94,0.18)', border: '1px solid rgba(62,138,94,0.4)', color: '#7DC79A', fontSize: 16, fontWeight: 600, letterSpacing: '0.04em', fontFamily: 'JetBrains Mono' }}>
-            <span style={{ width: 8, height: 8, borderRadius: 999, background: '#7DC79A' }} /> {stat}
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '8px 16px', borderRadius: 999, background: 'rgba(62,138,94,0.18)', border: '1px solid rgba(62,138,94,0.4)', color: COLORS.attest300, fontSize: 16, fontWeight: 600, letterSpacing: '0.04em', fontFamily: 'JetBrains Mono' }}>
+            <span style={{ width: 8, height: 8, borderRadius: 999, background: COLORS.attest300 }} /> {stat}
           </div>
           <div style={{ fontSize: 15, letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 700, color: COLORS.ink300 }}>{eyebrow}</div>
         </div>
@@ -245,7 +245,7 @@ export function LaunchPost({
       <div style={{ position: 'relative', height: '100%', padding: 72, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, padding: '10px 20px', borderRadius: 999, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.18)', color: '#fff', fontSize: 17, fontWeight: 600, fontFamily: 'JetBrains Mono' }}>
-            <span style={{ width: 8, height: 8, borderRadius: 999, background: '#7DC79A', boxShadow: '0 0 16px #7DC79A' }} /> {eyebrow}
+            <span style={{ width: 8, height: 8, borderRadius: 999, background: COLORS.attest300, boxShadow: `0 0 16px ${COLORS.attest300}` }} /> {eyebrow}
           </div>
         </div>
 

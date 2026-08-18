@@ -1,4 +1,5 @@
 import '@/styles/fonts.css';
+import '@/styles/tokens.generated.css';
 import '@/styles/brand.css';
 
 export const metadata = {

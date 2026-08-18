@@ -3,23 +3,11 @@ const { useState, useEffect, useRef, useMemo } = React;
 
 // ===== Brand primitives shared across all templates =====
 
-// Color tokens (mirrors brand.css; available to JS)
-export const COLORS = {
-  // Ink
-  ink950: '#0A0C10', ink900: '#0F1218', ink800: '#161A22', ink700: '#1E2230',
-  ink600: '#2A2F3D', ink500: '#3A4051', ink400: '#5A6172', ink300: '#858C9D',
-  ink200: '#B4BAC6', ink100: '#D9DCE3', ink75: '#E9EBEF', ink50: '#F3F4F7',
-  ink25: '#F9FAFB', ink0: '#FFFFFF',
-  // Brand
-  signal50: '#EEF0FB', signal100: '#D9DDF4', signal200: '#B6BEEA',
-  signal300: '#8892D8', signal400: '#5866C2', signal500: '#3947A8',
-  signal600: '#2B368A', signal700: '#212B6F', signal800: '#1A2256',
-  signal900: '#131941',
-  // Attest (sage)
-  attest100: '#DCEBE1', attest500: '#3E8A5E', attest700: '#285A3D', attestLight: '#7DC79A',
-  // Semantic
-  danger: '#E5484D', warn: '#D97706',
-};
+// Colour tokens come from tokens/brand.tokens.json via the generated module —
+// re-exported here so every existing `import { COLORS } from '@/components/brand'`
+// keeps working untouched.
+export { COLORS, TOKEN_LIST } from './tokens.generated';
+import { COLORS } from './tokens.generated';
 
 // Logo asset urls (different colorways — same shape, only color changes per request)
 export const ICON = {
