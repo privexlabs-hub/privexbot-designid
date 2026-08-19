@@ -53,6 +53,14 @@ const rgb = (hex) => {
   const n = parseInt(hex.slice(1), 16);
   return `rgb(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255})`;
 };
+// Backdrop glows are written as rgba(r, g, b, a). That is neither the hex form
+// nor `rgb(r, g, b)`, so before this the accent switch recoloured the text and
+// pills and left every background glow indigo — a half-recoloured artboard.
+// Matching the `rgba(r, g, b` prefix catches them at any alpha.
+const rgbaPrefix = (hex) => {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`;
+};
 
 /**
  * Swap any inline colour matching the brand indigo scale for the chosen accent.
@@ -71,7 +79,10 @@ export function applyAccent(root, accentId) {
     }
     let next = original;
     for (const [from, to] of Object.entries(map)) {
-      next = next.split(from).join(to).split(rgb(from)).join(rgb(to));
+      next = next
+        .split(from).join(to)
+        .split(rgb(from)).join(rgb(to))
+        .split(rgbaPrefix(from)).join(rgbaPrefix(to));
     }
     if (next !== el.getAttribute('style')) el.setAttribute('style', next);
   }

@@ -498,6 +498,12 @@ export default function EditorPage() {
               </div>
             )}
             <div
+              /* Remount on every template change. applyAccent caches each
+                 element's original style; once many templates render as the
+                 same archetype React reconciles instead of remounting, the DOM
+                 nodes survive the switch, and the cache would restore the
+                 previous template's colours. */
+              key={tpl.id}
               className="artboard-export"
               lang={script.lang}
               dir={script.dir}

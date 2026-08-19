@@ -1,5 +1,6 @@
 import React from 'react';
 import { COLORS, DotGrid, Frame, Ico, Icon } from '@/components/brand';
+import { Stack, Stat, Quote, glow } from '@/components/layouts';
 
 // ===== SQUARE FEED POSTS (1080×1080) =====
 // Templates designed for Instagram / X / LinkedIn / Facebook feed.
@@ -46,27 +47,27 @@ export function PrivacyPost({
   stat = 'TEE-attested',
 } = {}) {
   return (
-    <Frame lane="lane-dark" width={1080} height={1080}>
-      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 30% 20%, rgba(88,102,194,0.25), transparent 55%), radial-gradient(ellipse at 80% 90%, rgba(62,138,94,0.18), transparent 55%)' }} />
-      <DotGrid color="#fff" opacity={0.05} spacing={28} />
-      <div style={{ position: 'relative', height: '100%', padding: 64, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', zIndex: 2 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '8px 16px', borderRadius: 999, background: 'rgba(62,138,94,0.18)', border: '1px solid rgba(62,138,94,0.4)', color: COLORS.attest300, fontSize: 16, fontWeight: 600, letterSpacing: '0.04em', fontFamily: 'JetBrains Mono' }}>
-            <span style={{ width: 8, height: 8, borderRadius: 999, background: COLORS.attest300 }} /> {stat}
-          </div>
-          <div style={{ fontSize: 15, letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 700, color: COLORS.ink300 }}>{eyebrow}</div>
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 32, maxWidth: 880 }}>
-          <div className="display" style={{ fontSize: 92, color: '#fff', lineHeight: 0.98, whiteSpace: 'pre-line', fontWeight: 700 }}>
-            {title}
-          </div>
-          <div style={{ fontSize: 24, color: COLORS.ink200, lineHeight: 1.4, maxWidth: 820 }}>{body}</div>
-        </div>
-
-        <PostFooter lane="dark" tags={['privacy', 'TEE', 'AI']} />
-      </div>
-    </Frame>
+    <Stack
+      lane="lane-dark"
+      w={1080}
+      h={1080}
+      pad={64}
+      backdrop={glow([
+        { at: '30% 20%', tone: 'indigoLight', alpha: 0.25 },
+        { at: '80% 90%', tone: 'sage', alpha: 0.18 },
+      ])}
+      dots={{ color: '#fff', opacity: 0.05, spacing: 28 }}
+      badge={stat}
+      eyebrow={eyebrow}
+      title={title}
+      titleSize={92}
+      gap={32}
+      body={body}
+      bodySize={24}
+      bodyLineHeight={1.4}
+      bodyMaxWidth={820}
+      tags={['privacy', 'TEE', 'AI']}
+    />
   );
 }
 
@@ -119,36 +120,17 @@ export function QuotePost({
   role = 'CTO, North Loop Health',
 } = {}) {
   return (
-    <Frame lane="lane-editorial" width={1080} height={1080} style={{ background: COLORS.ink0 }}>
-      <DotGrid color={COLORS.signal500} opacity={0.05} spacing={32} />
-      <div style={{ position: 'absolute', top: 64, right: 64 }}>
-        <svg width="140" height="100" viewBox="0 0 140 100" fill="none">
-          <path d="M30 80 Q20 80 20 60 Q20 40 40 30 L48 42 Q34 48 34 60 L46 60 L46 80 L30 80z" fill={COLORS.signal500}/>
-          <path d="M90 80 Q80 80 80 60 Q80 40 100 30 L108 42 Q94 48 94 60 L106 60 L106 80 L90 80z" fill={COLORS.signal500}/>
-        </svg>
-      </div>
-      <div style={{ position: 'relative', height: '100%', padding: 80, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-        <div className="eyebrow" style={{ fontSize: 16 }}>Customer story</div>
-
-        <div className="display" style={{ fontSize: 60, color: COLORS.ink900, lineHeight: 1.08, letterSpacing: '-0.02em', fontWeight: 600, fontFamily: 'Inter Tight' }}>
-          "{quote}"
-        </div>
-
-        <div>
-          <div style={{ height: 1, background: COLORS.ink100, marginBottom: 22 }} />
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div>
-              <div style={{ fontSize: 22, fontWeight: 700, color: COLORS.ink900 }}>{author}</div>
-              <div style={{ fontSize: 17, color: COLORS.ink500, marginTop: 4 }}>{role}</div>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <Icon color="indigo" size={36} />
-              <span style={{ fontFamily: 'Inter Tight', fontWeight: 800, fontSize: 22, letterSpacing: '0.08em', color: COLORS.signal500 }}>PRIVEXBOT</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Frame>
+    <Quote
+      lane="lane-editorial"
+      w={1080}
+      h={1080}
+      frameStyle={{ background: COLORS.ink0 }}
+      dots={{ color: COLORS.signal500, opacity: 0.05, spacing: 32 }}
+      eyebrow="Customer story"
+      quote={`"${quote}"`}
+      author={author}
+      role={role}
+    />
   );
 }
 
@@ -160,32 +142,18 @@ export function StatPost({
   source = 'PrivexBot platform metrics, April 2026',
 } = {}) {
   return (
-    <Frame lane="lane-light" width={1080} height={1080} style={{ background: COLORS.signal50 }}>
-      <DotGrid color={COLORS.signal500} opacity={0.07} spacing={28} />
-      <div style={{ position: 'relative', height: '100%', padding: 72, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-        <div className="eyebrow" style={{ fontSize: 16, color: COLORS.signal700 }}>Build-in-public · April metrics</div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
-          <div style={{ fontFamily: 'Inter Tight', fontSize: 240, fontWeight: 800, color: COLORS.signal500, lineHeight: 0.9, letterSpacing: '-0.04em' }}>
-            {number}
-          </div>
-          <div style={{ fontSize: 30, color: COLORS.ink900, lineHeight: 1.25, maxWidth: 880, fontWeight: 500 }}>
-            {caption}
-          </div>
-          <div style={{ fontSize: 18, color: COLORS.ink500, maxWidth: 720 }}>
-            {context}
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
-          <div style={{ fontFamily: 'JetBrains Mono', fontSize: 13, color: COLORS.ink400 }}>{source}</div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <Icon color="indigo" size={36} />
-            <span style={{ fontFamily: 'Inter Tight', fontWeight: 800, fontSize: 22, letterSpacing: '0.08em', color: COLORS.signal500 }}>PRIVEXBOT</span>
-          </div>
-        </div>
-      </div>
-    </Frame>
+    <Stat
+      lane="lane-light"
+      w={1080}
+      h={1080}
+      frameStyle={{ background: COLORS.signal50 }}
+      dots={{ color: COLORS.signal500, opacity: 0.07, spacing: 28 }}
+      eyebrow="Build-in-public · April metrics"
+      number={number}
+      caption={caption}
+      context={context}
+      source={source}
+    />
   );
 }
 
